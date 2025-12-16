@@ -12,7 +12,9 @@ import Combine
 class PersistenceController: ObservableObject {
     static let shared = PersistenceController()
     
-    let container: NSPersistentCloudKitContainer
+    // Use standard container for now - switch to NSPersistentCloudKitContainer 
+    // once CloudKit entitlements are configured in Xcode
+    let container: NSPersistentContainer
     
     // Preview container for SwiftUI previews
     static var preview: PersistenceController = {
@@ -61,24 +63,23 @@ class PersistenceController: ObservableObject {
     }()
     
     init(inMemory: Bool = false) {
-        container = NSPersistentCloudKitContainer(name: "TaxGuardModel")
+        // Using standard container - CloudKit requires entitlements to be configured
+        // To enable CloudKit sync later:
+        // 1. Add iCloud capability in Xcode
+        // 2. Enable CloudKit and create container
+        // 3. Change to NSPersistentCloudKitContainer
+        container = NSPersistentContainer(name: "TaxGuardModel")
         
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         } else {
-            // Configure CloudKit
+            // Enable history tracking for potential future CloudKit migration
             guard let description = container.persistentStoreDescriptions.first else {
                 fatalError("Failed to retrieve a persistent store description.")
             }
             
-            // Enable CloudKit sync
             description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
             description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-            
-            // CloudKit container identifier
-            description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(
-                containerIdentifier: "iCloud.com.taxguard.1099"
-            )
         }
         
         container.loadPersistentStores { (storeDescription, error) in
