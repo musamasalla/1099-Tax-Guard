@@ -95,17 +95,6 @@ class TaxCalculationService: ObservableObject {
         let setAsidePercentage = grossIncome > 0 ? totalTax / grossIncome : 0.30 // Default 30%
         let amountToSetAside = grossIncome * setAsidePercentage
         
-        // Update published properties
-        self.totalIncome = grossIncome
-        self.totalDeductions = deductions
-        self.netIncome = netSelfEmploymentIncome
-        self.selfEmploymentTax = seTax.total
-        self.federalTax = federalTax
-        self.stateTax = stateTax
-        self.totalTaxOwed = totalTax
-        self.quarterlyPayment = quarterlyPayment
-        self.amountToSetAside = amountToSetAside
-        
         return TaxBreakdown(
             grossIncome: grossIncome,
             totalDeductions: deductions,

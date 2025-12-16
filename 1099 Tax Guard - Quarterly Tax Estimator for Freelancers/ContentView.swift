@@ -19,12 +19,26 @@ struct ContentView: View {
     
     @State private var hasCompletedOnboarding = false
     @State private var selectedTab = 0
+    @State private var isLoading = true
     
     private var settings: UserSettings? { userSettings.first }
     
     var body: some View {
-        Group {
-            if hasCompletedOnboarding || (settings?.hasCompletedOnboarding ?? false) {
+        ZStack {
+            Theme.backgroundGradient
+                .ignoresSafeArea()
+            
+            if isLoading {
+                // Loading state
+                VStack {
+                    ProgressView()
+                        .tint(Theme.primaryGreen)
+                    Text("Loading...")
+                        .font(Theme.captionFont)
+                        .foregroundColor(Theme.textSecondary)
+                        .padding(.top, 8)
+                }
+            } else if hasCompletedOnboarding {
                 mainTabView
             } else {
                 OnboardingView {
@@ -35,7 +49,11 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            hasCompletedOnboarding = settings?.hasCompletedOnboarding ?? false
+            // Check onboarding status after a brief delay to ensure Core Data is ready
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                hasCompletedOnboarding = settings?.hasCompletedOnboarding ?? false
+                isLoading = false
+            }
         }
     }
     
@@ -77,7 +95,7 @@ struct ContentView: View {
                 TaxCalculatorView()
             }
             .tabItem {
-                Image(systemName: "calculator.fill")
+                Image(systemName: "percent")
                 Text("Calculator")
             }
             .tag(3)

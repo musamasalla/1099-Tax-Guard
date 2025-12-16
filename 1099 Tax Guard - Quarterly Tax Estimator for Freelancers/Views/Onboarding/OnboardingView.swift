@@ -9,7 +9,6 @@ import SwiftUI
 
 struct OnboardingView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @ObservedObject var persistenceController = PersistenceController.shared
     
     @State private var currentStep = 0
     @State private var selectedState: USState = .california
@@ -86,7 +85,7 @@ struct OnboardingView: View {
             VStack(alignment: .leading, spacing: 16) {
                 FeatureRow(icon: "dollarsign.circle.fill", title: "Track 1099 Income", color: Theme.primaryGreen)
                 FeatureRow(icon: "doc.text.fill", title: "Manage Deductions", color: Theme.primaryBlue)
-                FeatureRow(icon: "calculator.fill", title: "Calculate Taxes", color: Theme.accentPurple)
+                FeatureRow(icon: "percent", title: "Calculate Taxes", color: Theme.accentPurple)
                 FeatureRow(icon: "bell.fill", title: "Payment Reminders", color: Theme.accentGold)
             }
             .padding(.horizontal, 40)
@@ -287,6 +286,7 @@ struct OnboardingView: View {
                                 .stroke(selectedFilingStatus == status ? Theme.primaryGreen : Color.clear, lineWidth: 2)
                         )
                     }
+                    .buttonStyle(.plain)
                 }
             }
             .padding(.horizontal, 40)
@@ -294,15 +294,35 @@ struct OnboardingView: View {
             Spacer()
             
             HStack(spacing: 16) {
-                Button(action: { withAnimation { currentStep = 2 } }) {
+                Button {
+                    withAnimation { currentStep = 2 }
+                } label: {
                     Text("Back")
+                        .font(Theme.headlineFont)
+                        .foregroundColor(Theme.primaryBlue)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(Theme.cardBackground)
+                        .cornerRadius(14)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14)
+                                .stroke(Theme.primaryBlue.opacity(0.3), lineWidth: 1)
+                        )
                 }
-                .buttonStyle(SecondaryButtonStyle())
+                .buttonStyle(.plain)
                 
-                Button(action: completeOnboarding) {
+                Button {
+                    completeOnboarding()
+                } label: {
                     Text("Start Tracking")
+                        .font(Theme.headlineFont)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(Theme.greenGradient)
+                        .cornerRadius(14)
                 }
-                .buttonStyle(PrimaryButtonStyle())
+                .buttonStyle(.plain)
             }
             .padding(.horizontal, 40)
             .padding(.bottom, 40)
@@ -311,23 +331,27 @@ struct OnboardingView: View {
     
     // MARK: - Complete Onboarding
     private func completeOnboarding() {
-        let income = Double(expectedIncome.replacingOccurrences(of: ",", with: "")) ?? 50000
-        
-        _ = persistenceController.createOrUpdateUserSettings(
-            state: selectedState,
-            expectedIncome: income,
-            filingStatus: selectedFilingStatus
-        )
-        
-        // Request notification permission
-        Task {
-            let granted = await NotificationService.shared.requestAuthorization()
-            if granted {
-                NotificationService.shared.scheduleQuarterlyReminders()
+        // Defer work to avoid "Publishing changes from within view updates" warning
+        DispatchQueue.main.async {
+            let income = Double(expectedIncome.replacingOccurrences(of: ",", with: "")) ?? 50000
+            
+            _ = PersistenceController.shared.createOrUpdateUserSettings(
+                state: selectedState,
+                expectedIncome: income,
+                filingStatus: selectedFilingStatus
+            )
+            
+            // Request notification permission
+            Task {
+                let granted = await NotificationService.shared.requestAuthorization()
+                if granted {
+                    NotificationService.shared.scheduleQuarterlyReminders()
+                }
             }
+            
+            // Call completion handler
+            onComplete()
         }
-        
-        onComplete()
     }
 }
 

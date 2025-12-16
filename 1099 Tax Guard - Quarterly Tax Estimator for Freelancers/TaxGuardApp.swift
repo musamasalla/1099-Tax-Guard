@@ -35,13 +35,6 @@ struct TaxGuardApp: App {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .preferredColorScheme(.dark)
-                .onReceive(NotificationCenter.default.publisher(for: .didTapQuarterlyReminder)) { notification in
-                    // Handle quarterly reminder tap - could navigate to payments
-                    if let userInfo = notification.userInfo,
-                       let _ = userInfo["quarter"] as? Int {
-                        // Navigation handled by app state
-                    }
-                }
         }
     }
 }
