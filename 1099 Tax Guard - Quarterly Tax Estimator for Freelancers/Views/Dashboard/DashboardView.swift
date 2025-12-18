@@ -91,39 +91,35 @@ struct DashboardView: View {
     }
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                Theme.backgroundGradient
-                    .ignoresSafeArea()
-                
-                ScrollView {
+        ZStack {
+            ElectricBackground()
+            
+            ScrollView {
+                VStack(spacing: 24) {
+                    // Header with greeting
+                    headerSection
+                    
+                    // Main cards
                     VStack(spacing: 20) {
-                        // Header with greeting
-                        headerSection
+                        // Current Quarter Income Card
+                        incomeCard
                         
-                        // Main cards
-                        VStack(spacing: 16) {
-                            // Current Quarter Income Card
-                            incomeCard
-                            
-                            // Estimated Tax Owed Card
-                            taxOwedCard
-                            
-                            // Next Payment Due Card
-                            nextPaymentCard
-                        }
-                        .padding(.horizontal)
+                        // Estimated Tax Owed Card
+                        taxOwedCard
                         
-                        // Quick Actions
-                        quickActionsSection
-                        
-                        // Recent Activity
-                        recentActivitySection
+                        // Next Payment Due Card
+                        nextPaymentCard
                     }
-                    .padding(.bottom, 100)
+                    .padding(.horizontal)
+                    
+                    // Quick Actions
+                    quickActionsSection
+                    
+                    // Recent Activity
+                    recentActivitySection
                 }
+                .padding(.bottom, 90) // Account for capsule tab bar
             }
-            .navigationBarHidden(true)
         }
         .sheet(isPresented: $showAddIncome) {
             AddIncomeView()
@@ -138,11 +134,11 @@ struct DashboardView: View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
                 Text(greeting)
-                    .font(Theme.captionFont)
+                    .font(Theme.headlineFont)
                     .foregroundColor(Theme.textSecondary)
                 
-                Text("\(currentYear) Tax Dashboard")
-                    .font(Theme.titleFont)
+                Text("\(String(currentYear)) Dashboard")
+                    .font(Theme.largeTitleFont)
                     .foregroundColor(Theme.textPrimary)
             }
             
@@ -157,33 +153,35 @@ struct DashboardView: View {
                         .font(.caption.bold())
                 }
                 .foregroundColor(.white)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 5)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
                 .background(Theme.premiumGradient)
-                .cornerRadius(12)
+                .cornerRadius(20)
+                .shadow(color: Theme.accentPurple.opacity(0.4), radius: 8, x: 0, y: 4)
             }
         }
         .padding(.horizontal)
-        .padding(.top, 20)
+        .padding(.top, 8) // Reduced to minimize top gap
     }
     
     private var greeting: String {
         let hour = Calendar.current.component(.hour, from: Date())
         switch hour {
-        case 0..<12: return "Good morning"
-        case 12..<17: return "Good afternoon"
-        default: return "Good evening"
+        case 0..<12: return "Good morning,"
+        case 12..<17: return "Good afternoon,"
+        default: return "Good evening,"
         }
     }
     
     // MARK: - Income Card
     private var incomeCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Image(systemName: "chart.line.uptrend.xyaxis")
                     .foregroundColor(Theme.primaryGreen)
+                    .font(.title3)
                 Text(QuarterHelper.quarterName(currentQuarter))
-                    .font(Theme.captionFont)
+                    .font(Theme.headlineFont)
                     .foregroundColor(Theme.textSecondary)
                 Spacer()
                 
@@ -191,16 +189,22 @@ struct DashboardView: View {
                     Text("View All")
                         .font(Theme.captionFont)
                         .foregroundColor(Theme.primaryBlue)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 4)
+                        .background(Theme.primaryBlue.opacity(0.1))
+                        .cornerRadius(8)
                 }
             }
             
-            Text("Current Quarter Income")
-                .font(Theme.headlineFont)
-                .foregroundColor(Theme.textPrimary)
-            
-            Text(quarterlyIncome.currencyFormatted)
-                .font(Theme.numberFont)
-                .foregroundColor(Theme.primaryGreen)
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Quarterly Income")
+                    .font(Theme.bodyFont)
+                    .foregroundColor(Theme.textMuted)
+                
+                Text(quarterlyIncome.currencyFormatted)
+                    .font(Theme.numberFont)
+                    .foregroundColor(Theme.textPrimary) // Cleaner look, not green
+            }
             
             // YTD indicator
             HStack {
@@ -211,18 +215,21 @@ struct DashboardView: View {
                     .font(Theme.captionFont)
                     .foregroundColor(Theme.textPrimary)
             }
+            .padding(.top, 4)
         }
-        .cardStyle()
+        .padding(24) // More padding for elegance
+        .glassCardStyle()
     }
     
     // MARK: - Tax Owed Card
     private var taxOwedCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Image(systemName: "exclamationmark.triangle.fill")
+                Image(systemName: "banknote.fill")
                     .foregroundColor(taxBreakdown.totalTaxOwed > 0 ? Theme.primaryRed : Theme.primaryGreen)
-                Text("Amount to Set Aside")
-                    .font(Theme.captionFont)
+                    .font(.title3)
+                Text("Tax Est.")
+                    .font(Theme.headlineFont)
                     .foregroundColor(Theme.textSecondary)
                 Spacer()
                 
@@ -230,19 +237,29 @@ struct DashboardView: View {
                     Text("Details")
                         .font(Theme.captionFont)
                         .foregroundColor(Theme.primaryBlue)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 4)
+                        .background(Theme.primaryBlue.opacity(0.1))
+                        .cornerRadius(8)
                 }
             }
             
-            Text("Estimated Tax Owed")
-                .font(Theme.headlineFont)
-                .foregroundColor(Theme.textPrimary)
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Set Aside")
+                    .font(Theme.bodyFont)
+                    .foregroundColor(Theme.textMuted)
+                
+                AnimatableNumber(value: taxBreakdown.totalTaxOwed, format: { $0.currencyFormatted })
+                    .font(Theme.numberFont)
+                    .foregroundColor(taxBreakdown.totalTaxOwed > 0 ? Theme.primaryRed : Theme.primaryGreen)
+                    .contentTransition(.numericText())
+            }
             
-            Text(taxBreakdown.totalTaxOwed.currencyFormatted)
-                .font(Theme.numberFont)
-                .foregroundColor(taxBreakdown.totalTaxOwed > 0 ? Theme.primaryRed : Theme.primaryGreen)
+            Divider()
+                .background(Theme.textMuted.opacity(0.2))
             
             // Breakdown
-            HStack(spacing: 16) {
+            HStack(spacing: 20) {
                 TaxBreakdownItem(label: "SE Tax", amount: taxBreakdown.selfEmploymentTax.total)
                 TaxBreakdownItem(label: "Federal", amount: taxBreakdown.federalIncomeTax)
                 TaxBreakdownItem(label: "State", amount: taxBreakdown.stateTax)
@@ -257,22 +274,26 @@ struct DashboardView: View {
                     .font(Theme.captionFont)
                     .foregroundColor(Theme.textPrimary)
             }
+            .padding(.top, 4)
         }
-        .cardStyle()
+        .padding(24)
+        .glassCardStyle()
         .overlay(
             RoundedRectangle(cornerRadius: Theme.cardCornerRadius)
-                .stroke(taxBreakdown.totalTaxOwed > 1000 ? Theme.primaryRed.opacity(0.5) : Color.clear, lineWidth: 2)
+                .stroke(taxBreakdown.totalTaxOwed > 1000 ? Theme.primaryRed.opacity(0.5) : Theme.primaryGreen.opacity(0.3), lineWidth: 2)
         )
+        .shadow(color: (taxBreakdown.totalTaxOwed > 1000 ? Theme.primaryRed : Theme.primaryGreen).opacity(0.3), radius: 20, x: 0, y: 0)
     }
     
     // MARK: - Next Payment Card
     private var nextPaymentCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Image(systemName: "calendar.badge.clock")
+                Image(systemName: "calendar")
                     .foregroundColor(Theme.accentGold)
-                Text("Quarterly Payment")
-                    .font(Theme.captionFont)
+                    .font(.title3)
+                Text("Deadline")
+                    .font(Theme.headlineFont)
                     .foregroundColor(Theme.textSecondary)
                 Spacer()
                 
@@ -280,23 +301,22 @@ struct DashboardView: View {
                     Text("Manage")
                         .font(Theme.captionFont)
                         .foregroundColor(Theme.primaryBlue)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 4)
+                        .background(Theme.primaryBlue.opacity(0.1))
+                        .cornerRadius(8)
                 }
             }
             
-            Text("Next Payment Due")
-                .font(Theme.headlineFont)
-                .foregroundColor(Theme.textPrimary)
-            
-            HStack(alignment: .bottom, spacing: 8) {
+            HStack(alignment: .lastTextBaseline, spacing: 8) {
                 Text("Q\(nextPayment.quarter)")
                     .font(Theme.numberFont)
                     .foregroundColor(Theme.accentGold)
                 
                 let daysUntil = QuarterHelper.daysUntil(date: nextPayment.date)
                 Text(daysUntil > 0 ? "in \(daysUntil) days" : "Today!")
-                    .font(Theme.headlineFont)
+                    .font(Theme.titleFont) // Serif
                     .foregroundColor(daysUntil <= 7 ? Theme.primaryRed : Theme.textSecondary)
-                    .padding(.bottom, 8)
             }
             
             // Due date
@@ -311,41 +331,43 @@ struct DashboardView: View {
             
             // Suggested payment amount
             HStack {
-                Text("Suggested Payment:")
+                Text("Suggested:")
                     .font(Theme.captionFont)
                     .foregroundColor(Theme.textSecondary)
                 Text(taxBreakdown.quarterlyPayment.currencyFormatted)
-                    .font(Theme.captionFont)
+                    .font(Theme.captionFont) // Can be bold
+                    .fontWeight(.bold)
                     .foregroundColor(Theme.primaryGreen)
             }
         }
-        .cardStyle()
+        .padding(24)
+        .glassCardStyle()
     }
     
     // MARK: - Quick Actions
     private var quickActionsSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 16) {
             Text("Quick Actions")
-                .font(Theme.headlineFont)
+                .font(Theme.titleFont)
                 .foregroundColor(Theme.textPrimary)
                 .padding(.horizontal)
             
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 12) {
-                    QuickActionButton(icon: "plus.circle.fill", title: "Add Income", color: Theme.primaryGreen) {
+                HStack(spacing: 16) {
+                    QuickActionButton(icon: "plus", title: "Income", color: Theme.primaryGreen) {
                         showAddIncome = true
                     }
                     
-                    QuickActionButton(icon: "minus.circle.fill", title: "Add Deduction", color: Theme.primaryBlue) {
+                    QuickActionButton(icon: "minus", title: "Deduction", color: Theme.primaryBlue) {
                         showAddDeduction = true
                     }
                     
-                    QuickActionButton(icon: "car.fill", title: "Log Mileage", color: Theme.accentPurple) {
+                    QuickActionButton(icon: "steeringwheel", title: "Mileage", color: Theme.accentPurple) {
                         showAddDeduction = true
                     }
                     
                     NavigationLink(destination: PaymentsView()) {
-                        QuickActionContent(icon: "creditcard.fill", title: "Pay Taxes", color: Theme.accentGold)
+                        QuickActionContent(icon: "checkmark.seal", title: "Pay Tax", color: Theme.accentGold)
                     }
                 }
                 .padding(.horizontal)
@@ -355,16 +377,16 @@ struct DashboardView: View {
     
     // MARK: - Recent Activity
     private var recentActivitySection: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 16) {
             Text("Recent Activity")
-                .font(Theme.headlineFont)
+                .font(Theme.titleFont)
                 .foregroundColor(Theme.textPrimary)
                 .padding(.horizontal)
             
-            VStack(spacing: 8) {
+            VStack(spacing: 12) {
                 ForEach(Array(allIncomes.prefix(3)), id: \.id) { income in
                     RecentActivityRow(
-                        icon: "arrow.down.circle.fill",
+                        icon: "arrow.down.left",
                         iconColor: Theme.primaryGreen,
                         title: income.clientName ?? "Income",
                         subtitle: IncomeType(rawValue: income.incomeType ?? "")?.displayName ?? "",
@@ -376,7 +398,7 @@ struct DashboardView: View {
                 
                 ForEach(Array(allDeductions.prefix(2)), id: \.id) { deduction in
                     RecentActivityRow(
-                        icon: "arrow.up.circle.fill",
+                        icon: "arrow.up.right",
                         iconColor: Theme.primaryRed,
                         title: DeductionCategory(rawValue: deduction.category ?? "")?.displayName ?? "Deduction",
                         subtitle: "Deduction",
@@ -397,12 +419,12 @@ struct TaxBreakdownItem: View {
     let amount: Double
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
+        VStack(alignment: .leading, spacing: 4) {
             Text(label)
                 .font(Theme.captionFont)
                 .foregroundColor(Theme.textMuted)
             Text(amount.wholeNumberFormatted)
-                .font(Theme.captionFont)
+                .font(Theme.headlineFont)
                 .foregroundColor(Theme.textSecondary)
         }
     }
@@ -418,6 +440,7 @@ struct QuickActionButton: View {
         Button(action: action) {
             QuickActionContent(icon: icon, title: title, color: color)
         }
+        .buttonStyle(ScaleButtonStyle())
     }
 }
 
@@ -427,17 +450,23 @@ struct QuickActionContent: View {
     let color: Color
     
     var body: some View {
-        VStack(spacing: 8) {
-            Image(systemName: icon)
-                .font(.title)
-                .foregroundColor(color)
+        VStack(spacing: 12) {
+            Circle()
+                .fill(color.opacity(0.1))
+                .frame(width: 44, height: 44)
+                .overlay(
+                    Image(systemName: icon)
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(color)
+                )
+            
             Text(title)
                 .font(Theme.captionFont)
+                .fontWeight(.medium)
                 .foregroundColor(Theme.textPrimary)
         }
-        .frame(width: 100, height: 80)
-        .background(Theme.cardBackground)
-        .cornerRadius(12)
+        .frame(width: 100, height: 110)
+        .glassCardStyle()
     }
 }
 
@@ -451,14 +480,19 @@ struct RecentActivityRow: View {
     let date: Date
     
     var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: icon)
-                .foregroundColor(iconColor)
-                .font(.title2)
+        HStack(spacing: 16) {
+            Circle()
+                .fill(Theme.cardBackgroundLight)
+                .frame(width: 48, height: 48)
+                .overlay(
+                    Image(systemName: icon)
+                        .foregroundColor(iconColor)
+                        .font(.system(size: 20))
+                )
             
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(title)
-                    .font(Theme.bodyFont)
+                    .font(Theme.headlineFont)
                     .foregroundColor(Theme.textPrimary)
                 Text(subtitle)
                     .font(Theme.captionFont)
@@ -467,18 +501,17 @@ struct RecentActivityRow: View {
             
             Spacer()
             
-            VStack(alignment: .trailing, spacing: 2) {
+            VStack(alignment: .trailing, spacing: 4) {
                 Text(amount)
-                    .font(Theme.bodyFont)
+                    .font(Theme.headlineFont)
                     .foregroundColor(amountColor)
                 Text(date, style: .date)
                     .font(Theme.captionFont)
                     .foregroundColor(Theme.textMuted)
             }
         }
-        .padding()
-        .background(Theme.cardBackground)
-        .cornerRadius(12)
+        .padding(16)
+        .glassCardStyle()
     }
 }
 

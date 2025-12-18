@@ -30,8 +30,7 @@ struct AddDeductionView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Theme.backgroundGradient
-                    .ignoresSafeArea()
+                ElectricBackground()
                 
                 ScrollView {
                     VStack(spacing: 24) {

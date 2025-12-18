@@ -45,8 +45,7 @@ struct DeductionListView: View {
     
     var body: some View {
         ZStack {
-            Theme.backgroundGradient
-                .ignoresSafeArea()
+            ElectricBackground()
             
             VStack(spacing: 0) {
                 // Summary header
@@ -154,35 +153,30 @@ struct DeductionListView: View {
     // MARK: - Deduction List
     private var deductionList: some View {
         List {
-            ForEach(filteredDeductions, id: \.id) { deduction in
+            ForEach(Array(filteredDeductions.enumerated()), id: \.element.id) { index, deduction in
                 DeductionRowView(deduction: deduction)
                     .listRowBackground(Theme.cardBackground)
                     .listRowSeparator(.hidden)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .animation(.spring(response: 0.4, dampingFraction: 0.8).delay(Double(index) * 0.05), value: true)
             }
             .onDelete(perform: deleteDeductions)
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
+        .contentMargins(.bottom, 90) // Account for capsule tab bar
     }
     
     // MARK: - Empty State
     private var emptyState: some View {
-        VStack(spacing: 16) {
+        VStack {
             Spacer()
             
-            Image(systemName: "doc.text")
-                .font(.system(size: 60))
-                .foregroundColor(Theme.textMuted)
-            
-            Text("No deductions recorded")
-                .font(Theme.headlineFont)
-                .foregroundColor(Theme.textSecondary)
-            
-            Text("Track your business expenses to reduce your tax burden")
-                .font(Theme.captionFont)
-                .foregroundColor(Theme.textMuted)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
+            EmptyStateView(
+                icon: "doc.text",
+                title: "No Deductions Yet",
+                message: "Track your business expenses to reduce your tax burden."
+            )
             
             HStack(spacing: 12) {
                 Button(action: { showAddDeduction = true }) {

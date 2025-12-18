@@ -1,0 +1,44 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -scheme "1099 Tax Guard - Quarterly Tax Estimator for Freelancers" -destination generic/platform=iOS build
+
+2025-12-17 00:47:53.402 xcodebuild[27935:242034] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (1 target)
+    Target '1099 Tax Guard - Quarterly Tax Estimator for Freelancers' in project '1099 Tax Guard - Quarterly Tax Estimator for Freelancers' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.2.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/momc --dry-run --action generate --swift-version 5.0 --sdkroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.2.sdk --iphoneos-deployment-target 26.2 --module _099_Tax_Guard___Quarterly_Tax_Estimator_for_Freelancers /Users/musamasalla/Library/Mobile Documents/com~apple~CloudDocs/Cursor/New Projects/1099 Tax Guard - Quarterly Tax Estimator for Freelancers/iOS/1099 Tax Guard - Quarterly Tax Estimator for Freelancers/1099 Tax Guard - Quarterly Tax Estimator for Freelancers/TaxGuardModel.xcdatamodeld /Users/musamasalla/Library/Developer/Xcode/DerivedData/1099_Tax_Guard_-_Quarterly_Tax_Estimator_for_Freelancers-fkwsjtzdoecdvpglaohylihzsrko/Build/Intermediates.noindex/1099 Tax Guard - Quarterly Tax Estimator for Freelancers.build/Debug-iphoneos/1099 Tax Guard - Quarterly Tax Estimator for Freelancers.build/DerivedSources/CoreDataGenerated/TaxGuardModel
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/musamasalla/Library/Mobile Documents/com~apple~CloudDocs/Cursor/New Projects/1099 Tax Guard - Quarterly Tax Estimator for Freelancers/iOS/1099 Tax Guard - Quarterly Tax Estimator for Freelancers/1099 Tax Guard - Quarterly Tax Estimator for Freelancers/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: 97664f0e8b7c1acd23c2b42c8b4c513a
+Build description path: /Users/musamasalla/Library/Developer/Xcode/DerivedData/1099_Tax_Guard_-_Quarterly_Tax_Estimator_for_Freelancers-fkwsjtzdoecdvpglaohylihzsrko/Build/Intermediates.noindex/XCBuildData/97664f0e8b7c1acd23c2b42c8b4c513a.xcbuilddata
+/Users/musamasalla/Library/Mobile Documents/com~apple~CloudDocs/Cursor/New Projects/1099 Tax Guard - Quarterly Tax Estimator for Freelancers/iOS/1099 Tax Guard - Quarterly Tax Estimator for Freelancers/1099 Tax Guard - Quarterly Tax Estimator for Freelancers.xcodeproj: error: No profiles for '-099-Tax-Guard.-099-Tax-Guard---Quarterly-Tax-Estimator-for-Freelancers' were found: Xcode couldn't find any iOS App Development provisioning profiles matching '-099-Tax-Guard.-099-Tax-Guard---Quarterly-Tax-Estimator-for-Freelancers'. Automatic signing is disabled and unable to generate a profile. To enable automatic signing, pass -allowProvisioningUpdates to xcodebuild. (in target '1099 Tax Guard - Quarterly Tax Estimator for Freelancers' from project '1099 Tax Guard - Quarterly Tax Estimator for Freelancers')
+** BUILD FAILED **
+
+
+The following build commands failed:
+	Building project 1099 Tax Guard - Quarterly Tax Estimator for Freelancers with scheme 1099 Tax Guard - Quarterly Tax Estimator for Freelancers
+(1 failure)

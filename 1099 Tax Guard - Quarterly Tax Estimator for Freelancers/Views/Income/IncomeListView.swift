@@ -62,8 +62,7 @@ struct IncomeListView: View {
     
     var body: some View {
         ZStack {
-            Theme.backgroundGradient
-                .ignoresSafeArea()
+            ElectricBackground()
             
             VStack(spacing: 0) {
                 // Summary header
@@ -155,33 +154,30 @@ struct IncomeListView: View {
     // MARK: - Income List
     private var incomeList: some View {
         List {
-            ForEach(filteredIncomes, id: \.id) { income in
+            ForEach(Array(filteredIncomes.enumerated()), id: \.element.id) { index, income in
                 IncomeRowView(income: income)
                     .listRowBackground(Theme.cardBackground)
                     .listRowSeparator(.hidden)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .animation(.spring(response: 0.4, dampingFraction: 0.8).delay(Double(index) * 0.05), value: true)
             }
             .onDelete(perform: deleteIncomes)
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
+        .contentMargins(.bottom, 90) // Account for capsule tab bar
     }
     
     // MARK: - Empty State
     private var emptyState: some View {
-        VStack(spacing: 16) {
+        VStack {
             Spacer()
             
-            Image(systemName: "dollarsign.circle")
-                .font(.system(size: 60))
-                .foregroundColor(Theme.textMuted)
-            
-            Text("No income recorded")
-                .font(Theme.headlineFont)
-                .foregroundColor(Theme.textSecondary)
-            
-            Text("Tap + to add your first income entry")
-                .font(Theme.captionFont)
-                .foregroundColor(Theme.textMuted)
+            EmptyStateView(
+                icon: "dollarsign.circle",
+                title: "No Income Yet",
+                message: "Tap the + button to add your first income entry."
+            )
             
             Button(action: { showAddIncome = true }) {
                 Text("Add Income")

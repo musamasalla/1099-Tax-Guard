@@ -17,10 +17,10 @@ struct TaxGuardApp: App {
         // Set up notification delegate
         UNUserNotificationCenter.current().delegate = NotificationService.shared
         
-        // Configure navigation bar appearance
+        // Configure navigation bar appearance - TRANSPARENT to allow background to show through
         let navAppearance = UINavigationBarAppearance()
-        navAppearance.configureWithOpaqueBackground()
-        navAppearance.backgroundColor = UIColor(Theme.background)
+        navAppearance.configureWithTransparentBackground() // Transparent, not opaque
+        navAppearance.backgroundColor = .clear
         navAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         navAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         
@@ -28,6 +28,14 @@ struct TaxGuardApp: App {
         UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
         UINavigationBar.appearance().compactAppearance = navAppearance
         UINavigationBar.appearance().tintColor = UIColor(Theme.primaryGreen)
+        
+        // Set window background color to match theme (eliminates black bars)
+        DispatchQueue.main.async {
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first {
+                window.backgroundColor = UIColor(Theme.electricBlue)
+            }
+        }
     }
     
     var body: some Scene {

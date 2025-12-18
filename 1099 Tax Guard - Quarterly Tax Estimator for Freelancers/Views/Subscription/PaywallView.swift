@@ -19,8 +19,7 @@ struct PaywallView: View {
     
     var body: some View {
         ZStack {
-            Theme.backgroundGradient
-                .ignoresSafeArea()
+            ElectricBackground()
             
             ScrollView {
                 VStack(spacing: 24) {

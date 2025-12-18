@@ -25,8 +25,7 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            Theme.backgroundGradient
-                .ignoresSafeArea()
+            ElectricBackground()
             
             if isLoading {
                 // Loading state
@@ -48,7 +47,11 @@ struct ContentView: View {
                 }
             }
         }
+        .ignoresSafeArea(.all) // Ensure root view extends edge-to-edge
         .onAppear {
+            // Set window background color to match theme
+            setWindowBackgroundColor()
+            
             // Check onboarding status after a brief delay to ensure Core Data is ready
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 hasCompletedOnboarding = settings?.hasCompletedOnboarding ?? false
@@ -57,74 +60,40 @@ struct ContentView: View {
         }
     }
     
+    // MARK: - Set Window Background
+    private func setWindowBackgroundColor() {
+        DispatchQueue.main.async {
+            guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let window = scene.windows.first else { return }
+            window.backgroundColor = UIColor(Theme.electricBlue)
+        }
+    }
+    
     // MARK: - Main Tab View
     private var mainTabView: some View {
-        TabView(selection: $selectedTab) {
-            // Dashboard Tab
-            NavigationView {
-                DashboardView()
+        ZStack(alignment: .bottom) {
+            // Main Content
+            Group {
+                switch selectedTab {
+                case 0:
+                    NavigationView { DashboardView() }
+                case 1:
+                    NavigationView { IncomeListView() }
+                case 2:
+                    NavigationView { DeductionListView() }
+                case 3:
+                    // Mapping "Summary" tab to Tax Calculator
+                    NavigationView { TaxCalculatorView() }
+                case 4:
+                    NavigationView { SettingsView() }
+                default:
+                    EmptyView()
+                }
             }
-            .tabItem {
-                Image(systemName: "house.fill")
-                Text("Home")
-            }
-            .tag(0)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             
-            // Income Tab
-            NavigationView {
-                IncomeListView()
-            }
-            .tabItem {
-                Image(systemName: "dollarsign.circle.fill")
-                Text("Income")
-            }
-            .tag(1)
-            
-            // Deductions Tab
-            NavigationView {
-                DeductionListView()
-            }
-            .tabItem {
-                Image(systemName: "doc.text.fill")
-                Text("Deductions")
-            }
-            .tag(2)
-            
-            // Calculator Tab
-            NavigationView {
-                TaxCalculatorView()
-            }
-            .tabItem {
-                Image(systemName: "percent")
-                Text("Calculator")
-            }
-            .tag(3)
-            
-            // Settings Tab
-            NavigationView {
-                SettingsView()
-            }
-            .tabItem {
-                Image(systemName: "gearshape.fill")
-                Text("Settings")
-            }
-            .tag(4)
-        }
-        .tint(Theme.primaryGreen)
-        .onAppear {
-            // Configure tab bar appearance
-            let appearance = UITabBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = UIColor(Theme.cardBackground)
-            
-            appearance.stackedLayoutAppearance.normal.iconColor = UIColor(Theme.textMuted)
-            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor(Theme.textMuted)]
-            
-            appearance.stackedLayoutAppearance.selected.iconColor = UIColor(Theme.primaryGreen)
-            appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor(Theme.primaryGreen)]
-            
-            UITabBar.appearance().standardAppearance = appearance
-            UITabBar.appearance().scrollEdgeAppearance = appearance
+            // Custom Tab Bar overlay
+            CapsuleTabBar(selectedTab: $selectedTab)
         }
     }
 }

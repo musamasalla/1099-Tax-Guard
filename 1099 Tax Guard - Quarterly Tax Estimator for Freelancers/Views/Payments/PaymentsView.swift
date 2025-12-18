@@ -81,8 +81,7 @@ struct PaymentsView: View {
     
     var body: some View {
         ZStack {
-            Theme.backgroundGradient
-                .ignoresSafeArea()
+            ElectricBackground()
             
             ScrollView {
                 VStack(spacing: 20) {
@@ -99,6 +98,7 @@ struct PaymentsView: View {
                     paymentHistorySection
                 }
                 .padding()
+                .padding(.bottom, 90) // Account for capsule tab bar
             }
         }
         .navigationTitle("Payments")
@@ -331,8 +331,7 @@ struct RecordPaymentSheet: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Theme.backgroundGradient
-                    .ignoresSafeArea()
+                ElectricBackground()
                 
                 VStack(spacing: 24) {
                     // Header

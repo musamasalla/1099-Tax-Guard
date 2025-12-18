@@ -8,82 +8,178 @@
 import SwiftUI
 
 // MARK: - App Theme
+// MARK: - App Theme
 struct Theme {
-    // MARK: - Primary Colors
-    static let primaryGreen = Color(hex: "10B981") // Emerald green - safe/paid
-    static let primaryRed = Color(hex: "EF4444") // Red - owed/warning
-    static let primaryBlue = Color(hex: "3B82F6") // Blue - info/neutral
+    // MARK: - Electric Blue Palette
     
-    // MARK: - Background Colors
-    static let background = Color(hex: "0F172A") // Dark navy
-    static let cardBackground = Color(hex: "1E293B") // Slightly lighter navy
-    static let cardBackgroundLight = Color(hex: "334155") // Even lighter for nested cards
+    // Main Background
+    static let electricBlue = Color(hex: "4136F1") // The core brand color
+    static let deepBlue = Color(hex: "2A22A2") // For gradients/shadows
+    static let background = electricBlue // Alias for compatibility
     
-    // MARK: - Text Colors
-    static let textPrimary = Color.white
-    static let textSecondary = Color(hex: "94A3B8") // Slate gray
-    static let textMuted = Color(hex: "64748B") // Darker slate
+    // Accents
+    static let neonLime = Color(hex: "E8FE5A") // Primary Actions / Success
+    static let pureWhite = Color.white
+    static let semiWhite = Color.white.opacity(0.9)
+    static let softWhite = Color.white.opacity(0.6)
     
-    // MARK: - Accent Colors
-    static let accentGold = Color(hex: "F59E0B") // Amber for highlights
-    static let accentPurple = Color(hex: "8B5CF6") // Purple for premium features
+    // Semantic Colors
+    static let primaryGreen = neonLime // Mapping legacy name to new color
+    static let primaryRed = Color(hex: "FF453A") // Standard iOS Red for errors
+    static let primaryBlue = Color(hex: "6BF5FF") // Cyan accent
     
-    // MARK: - Gradients
-    static let greenGradient = LinearGradient(
-        colors: [Color(hex: "10B981"), Color(hex: "059669")],
+    static let textPrimary = pureWhite
+    static let textSecondary = softWhite
+    static let textMuted = Color.white.opacity(0.4)
+    static let textDark = Color(hex: "1A1A1A") // For text on Lime buttons
+    
+    // Card Backgrounds
+    static let cardBackground = Color.white.opacity(0.1)
+    static let cardBackgroundLight = Color.white.opacity(0.15)
+    
+    // MARK: - Typography (SF Pro, Bold)
+    
+    static let largeTitleFont = Font.system(size: 34, weight: .heavy, design: .default)
+    static let titleFont = Font.system(size: 28, weight: .bold, design: .default)
+    static let headlineFont = Font.system(size: 20, weight: .bold, design: .default)
+    static let subheadlineFont = Font.system(size: 17, weight: .semibold, design: .default)
+    static let bodyFont = Font.system(size: 17, weight: .regular, design: .default)
+    static let captionFont = Font.system(size: 13, weight: .medium, design: .default)
+    
+    static let numberFont = Font.system(size: 34, weight: .bold, design: .rounded)
+    static let mediumNumberFont = Font.system(size: 24, weight: .bold, design: .rounded)
+    
+    // MARK: - Gradients (Electric Blue)
+    
+    static let backgroundGradient = LinearGradient(
+        gradient: Gradient(colors: [electricBlue, deepBlue]),
         startPoint: .topLeading,
         endPoint: .bottomTrailing
     )
     
-    static let redGradient = LinearGradient(
-        colors: [Color(hex: "EF4444"), Color(hex: "DC2626")],
+    static let limeGradient = LinearGradient(
+        gradient: Gradient(colors: [neonLime, Color(hex: "C8DE40")]),
         startPoint: .topLeading,
         endPoint: .bottomTrailing
     )
     
     static let blueGradient = LinearGradient(
-        colors: [Color(hex: "3B82F6"), Color(hex: "2563EB")],
+        gradient: Gradient(colors: [Color(hex: "6BF5FF"), Color(hex: "4136F1")]),
         startPoint: .topLeading,
         endPoint: .bottomTrailing
     )
     
     static let premiumGradient = LinearGradient(
-        colors: [Color(hex: "8B5CF6"), Color(hex: "6366F1")],
+        gradient: Gradient(colors: [Color(hex: "FFD60A"), Color(hex: "FF9F0A")]), // Gold to Orange
         startPoint: .topLeading,
         endPoint: .bottomTrailing
     )
     
-    static let backgroundGradient = LinearGradient(
-        colors: [Color(hex: "0F172A"), Color(hex: "1E293B")],
-        startPoint: .top,
-        endPoint: .bottom
+    // Compatibility / Additional Accents
+    static let accentGold = Color(hex: "FFD60A")
+    static let accentPurple = Color(hex: "BF5AF2")
+    
+    static let greenGradient = limeGradient // Alias
+    static let redGradient = LinearGradient(
+        gradient: Gradient(colors: [primaryRed, Color(hex: "FF3B30")]),
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
     )
     
-    // MARK: - Typography
-    static let largeTitleFont = Font.system(size: 34, weight: .bold, design: .rounded)
-    static let titleFont = Font.system(size: 24, weight: .bold, design: .rounded)
-    static let headlineFont = Font.system(size: 17, weight: .semibold, design: .rounded)
-    static let bodyFont = Font.system(size: 17, weight: .regular, design: .rounded)
-    static let captionFont = Font.system(size: 13, weight: .regular, design: .rounded)
-    static let numberFont = Font.system(size: 48, weight: .bold, design: .rounded)
-    static let mediumNumberFont = Font.system(size: 32, weight: .bold, design: .rounded)
+    // MARK: - Dimensions
     
-    // MARK: - Card Styling
-    static let cardCornerRadius: CGFloat = 20
-    static let cardShadowRadius: CGFloat = 10
-    static let cardPadding: CGFloat = 20
-    
-    // MARK: - Helper Functions
-    static func statusColor(for amount: Double, threshold: Double = 0) -> Color {
-        amount >= threshold ? primaryGreen : primaryRed
-    }
-    
-    static func statusGradient(for amount: Double, threshold: Double = 0) -> LinearGradient {
-        amount >= threshold ? greenGradient : redGradient
+    static let cardCornerRadius: CGFloat = 24 // Increased for "Squircle" look
+    static let cardShadowRadius: CGFloat = 8
+}
+
+// MARK: - Modifiers
+
+struct GlassCardModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .background(Theme.cardBackground)
+            .cornerRadius(Theme.cardCornerRadius)
+            .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
+            .overlay(
+                RoundedRectangle(cornerRadius: Theme.cardCornerRadius)
+                    .stroke(Color.white.opacity(0.2), lineWidth: 1)
+            )
     }
 }
 
-// MARK: - Color Extension
+struct CardStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .background(Theme.cardBackground)
+            .cornerRadius(Theme.cardCornerRadius)
+            .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+    }
+}
+
+// MARK: - Button Styles
+
+struct PrimaryButtonStyle: ButtonStyle {
+    var gradient: LinearGradient = Theme.limeGradient
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(Theme.headlineFont)
+            .foregroundColor(Theme.textDark) // Dark text on Lime
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Theme.neonLime) // Solid color over gradient for sharper loom
+            .cornerRadius(Theme.cardCornerRadius)
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
+            .animation(.spring(response: 0.3), value: configuration.isPressed)
+            .shadow(color: Theme.neonLime.opacity(0.3), radius: 8, x: 0, y: 4)
+            .onChange(of: configuration.isPressed) { _, isPressed in
+                if isPressed {
+                    let generator = UIImpactFeedbackGenerator(style: .light)
+                    generator.impactOccurred()
+                }
+            }
+    }
+}
+
+struct SecondaryButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(Theme.headlineFont)
+            .foregroundColor(Theme.pureWhite)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color.white.opacity(0.15))
+            .cornerRadius(Theme.cardCornerRadius)
+            .overlay(
+                RoundedRectangle(cornerRadius: Theme.cardCornerRadius)
+                    .stroke(Color.white.opacity(0.3), lineWidth: 1)
+            )
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
+            .animation(.spring(), value: configuration.isPressed)
+            .onChange(of: configuration.isPressed) { _, isPressed in
+                if isPressed {
+                    let generator = UIImpactFeedbackGenerator(style: .light)
+                    generator.impactOccurred()
+                }
+            }
+    }
+}
+
+struct ScaleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.96 : 1.0)
+            .animation(.interactiveSpring(response: 0.3, dampingFraction: 0.6), value: configuration.isPressed)
+            .onChange(of: configuration.isPressed) { _, isPressed in
+                if isPressed {
+                    let generator = UIImpactFeedbackGenerator(style: .light)
+                    generator.impactOccurred()
+                }
+            }
+    }
+}
+
+// Extension to support Hex colors
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
@@ -98,8 +194,9 @@ extension Color {
         case 8: // ARGB (32-bit)
             (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
         default:
-            (a, r, g, b) = (255, 0, 0, 0)
+            (a, r, g, b) = (1, 1, 1, 0)
         }
+
         self.init(
             .sRGB,
             red: Double(r) / 255,
@@ -110,69 +207,13 @@ extension Color {
     }
 }
 
-// MARK: - View Modifiers
-struct CardModifier: ViewModifier {
-    var backgroundColor: Color = Theme.cardBackground
-    
-    func body(content: Content) -> some View {
-        content
-            .padding(Theme.cardPadding)
-            .background(backgroundColor)
-            .cornerRadius(Theme.cardCornerRadius)
-            .shadow(color: .black.opacity(0.2), radius: Theme.cardShadowRadius, x: 0, y: 4)
-    }
-}
-
-struct GlassCardModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .padding(Theme.cardPadding)
-            .background(.ultraThinMaterial)
-            .cornerRadius(Theme.cardCornerRadius)
-    }
-}
-
+// Extensions for consistency
 extension View {
-    func cardStyle(backgroundColor: Color = Theme.cardBackground) -> some View {
-        modifier(CardModifier(backgroundColor: backgroundColor))
-    }
-    
     func glassCardStyle() -> some View {
         modifier(GlassCardModifier())
     }
-}
-
-// MARK: - Button Styles
-struct PrimaryButtonStyle: ButtonStyle {
-    var gradient: LinearGradient = Theme.greenGradient
     
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(Theme.headlineFont)
-            .foregroundColor(.white)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 16)
-            .background(gradient)
-            .cornerRadius(14)
-            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
-            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
-    }
-}
-
-struct SecondaryButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(Theme.headlineFont)
-            .foregroundColor(Theme.primaryBlue)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 16)
-            .background(Theme.cardBackground)
-            .cornerRadius(14)
-            .overlay(
-                RoundedRectangle(cornerRadius: 14)
-                    .stroke(Theme.primaryBlue.opacity(0.3), lineWidth: 1)
-            )
-            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
-            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+    func cardStyle() -> some View {
+        modifier(CardStyle())
     }
 }

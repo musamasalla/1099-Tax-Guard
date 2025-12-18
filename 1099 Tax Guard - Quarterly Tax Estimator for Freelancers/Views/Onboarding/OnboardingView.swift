@@ -21,7 +21,8 @@ struct OnboardingView: View {
     var body: some View {
         ZStack {
             // Background gradient
-            Theme.backgroundGradient
+            // Background gradient
+            Theme.electricBlue
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
@@ -65,12 +66,18 @@ struct OnboardingView: View {
                 Circle()
                     .fill(Theme.greenGradient)
                     .frame(width: 120, height: 120)
+                    .blur(radius: 20) // Soft glow
+                
+                Circle()
+                   .strokeBorder(.white.opacity(0.2), lineWidth: 1)
+                   .background(Circle().fill(Theme.cardBackground.opacity(0.5)))
+                   .frame(width: 120, height: 120)
                 
                 Image(systemName: "shield.checkered")
                     .font(.system(size: 50))
-                    .foregroundColor(.white)
+                    .foregroundStyle(Theme.greenGradient)
             }
-            .shadow(color: Theme.primaryGreen.opacity(0.4), radius: 20)
+            .shadow(color: Theme.primaryGreen.opacity(0.4), radius: 30)
             
             VStack(spacing: 16) {
                 Text("1099 Tax Guard")
@@ -82,14 +89,15 @@ struct OnboardingView: View {
                     .foregroundColor(Theme.textSecondary)
             }
             
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: 20) {
                 FeatureRow(icon: "dollarsign.circle.fill", title: "Track 1099 Income", color: Theme.primaryGreen)
                 FeatureRow(icon: "doc.text.fill", title: "Manage Deductions", color: Theme.primaryBlue)
                 FeatureRow(icon: "percent", title: "Calculate Taxes", color: Theme.accentPurple)
                 FeatureRow(icon: "bell.fill", title: "Payment Reminders", color: Theme.accentGold)
             }
-            .padding(.horizontal, 40)
-            .padding(.top, 20)
+            .padding(30)
+            .glassCardStyle()
+            .padding(.horizontal, 20)
             
             Spacer()
             
@@ -108,11 +116,12 @@ struct OnboardingView: View {
             Spacer()
             
             VStack(spacing: 16) {
-                Image(systemName: "mappin.circle.fill")
+                Image(systemName: "map.fill") // More abstract
                     .font(.system(size: 60))
                     .foregroundStyle(Theme.blueGradient)
+                    .shadow(color: Theme.primaryBlue.opacity(0.5), radius: 20)
                 
-                Text("What state do you live in?")
+                Text("Where do you live?")
                     .font(Theme.titleFont)
                     .foregroundColor(Theme.textPrimary)
                     .multilineTextAlignment(.center)
@@ -137,16 +146,25 @@ struct OnboardingView: View {
                         .foregroundColor(Theme.textSecondary)
                 }
                 .padding()
-                .background(Theme.cardBackground)
-                .cornerRadius(12)
+                .glassCardStyle()
             }
             .padding(.horizontal, 40)
             
             // State tax info
-            Text(selectedState.taxDescription)
+            if selectedState.hasNoIncomeTax {
+                HStack {
+                    Image(systemName: "checkmark.shield.fill")
+                    Text(selectedState.taxDescription)
+                }
                 .font(Theme.captionFont)
-                .foregroundColor(selectedState.hasNoIncomeTax ? Theme.primaryGreen : Theme.textSecondary)
+                .foregroundColor(Theme.primaryGreen)
                 .padding(.horizontal, 40)
+            } else {
+                Text(selectedState.taxDescription)
+                    .font(Theme.captionFont)
+                    .foregroundColor(Theme.textSecondary)
+                    .padding(.horizontal, 40)
+            }
             
             Spacer()
             
@@ -175,11 +193,12 @@ struct OnboardingView: View {
             Spacer()
             
             VStack(spacing: 16) {
-                Image(systemName: "dollarsign.circle.fill")
+                Image(systemName: "chart.pie.fill")
                     .font(.system(size: 60))
                     .foregroundStyle(Theme.greenGradient)
+                    .shadow(color: Theme.primaryGreen.opacity(0.5), radius: 20)
                 
-                Text("Expected Annual Income")
+                Text("Expected Income")
                     .font(Theme.titleFont)
                     .foregroundColor(Theme.textPrimary)
                     .multilineTextAlignment(.center)
@@ -204,8 +223,7 @@ struct OnboardingView: View {
                     .multilineTextAlignment(.leading)
             }
             .padding()
-            .background(Theme.cardBackground)
-            .cornerRadius(12)
+            .glassCardStyle()
             .padding(.horizontal, 40)
             
             // Quick select amounts
@@ -241,9 +259,10 @@ struct OnboardingView: View {
             Spacer()
             
             VStack(spacing: 16) {
-                Image(systemName: "person.crop.circle.badge.checkmark")
+                Image(systemName: "person.text.rectangle.fill")
                     .font(.system(size: 60))
                     .foregroundStyle(Theme.premiumGradient)
+                    .shadow(color: Theme.accentPurple.opacity(0.5), radius: 20)
                 
                 Text("Filing Status")
                     .font(Theme.titleFont)
@@ -258,7 +277,7 @@ struct OnboardingView: View {
             .padding(.horizontal, 40)
             
             // Filing status options
-            VStack(spacing: 12) {
+            VStack(spacing: 16) {
                 ForEach(FilingStatus.allCases, id: \.self) { status in
                     Button(action: { selectedFilingStatus = status }) {
                         HStack {
@@ -268,7 +287,7 @@ struct OnboardingView: View {
                                 .frame(width: 30)
                             
                             Text(status.displayName)
-                                .font(Theme.bodyFont)
+                                .font(Theme.headlineFont)
                                 .foregroundColor(Theme.textPrimary)
                             
                             Spacer()
@@ -279,12 +298,18 @@ struct OnboardingView: View {
                             }
                         }
                         .padding()
-                        .background(selectedFilingStatus == status ? Theme.cardBackgroundLight : Theme.cardBackground)
-                        .cornerRadius(12)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(selectedFilingStatus == status ? Theme.primaryGreen : Color.clear, lineWidth: 2)
+                        .background(
+                            ZStack {
+                                if selectedFilingStatus == status {
+                                    Theme.cardBackgroundLight
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(Theme.primaryGreen, lineWidth: 1)
+                                } else {
+                                    Theme.cardBackground
+                                }
+                            }
                         )
+                        .cornerRadius(16)
                     }
                     .buttonStyle(.plain)
                 }
@@ -298,31 +323,15 @@ struct OnboardingView: View {
                     withAnimation { currentStep = 2 }
                 } label: {
                     Text("Back")
-                        .font(Theme.headlineFont)
-                        .foregroundColor(Theme.primaryBlue)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
-                        .background(Theme.cardBackground)
-                        .cornerRadius(14)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 14)
-                                .stroke(Theme.primaryBlue.opacity(0.3), lineWidth: 1)
-                        )
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(SecondaryButtonStyle())
                 
                 Button {
                     completeOnboarding()
                 } label: {
                     Text("Start Tracking")
-                        .font(Theme.headlineFont)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
-                        .background(Theme.greenGradient)
-                        .cornerRadius(14)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(PrimaryButtonStyle())
             }
             .padding(.horizontal, 40)
             .padding(.bottom, 40)
@@ -363,13 +372,17 @@ struct FeatureRow: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            Image(systemName: icon)
-                .font(.title2)
-                .foregroundColor(color)
-                .frame(width: 30)
+            Circle()
+                .fill(color.opacity(0.1))
+                .frame(width: 40, height: 40)
+                .overlay(
+                    Image(systemName: icon)
+                        .font(.title3)
+                        .foregroundColor(color)
+                )
             
             Text(title)
-                .font(Theme.bodyFont)
+                .font(Theme.headlineFont)
                 .foregroundColor(Theme.textPrimary)
             
             Spacer()
@@ -386,12 +399,12 @@ struct QuickAmountButton: View {
             selectedAmount = "\(amount)"
         }) {
             Text("$\(amount / 1000)K")
-                .font(Theme.captionFont)
+                .font(Theme.headlineFont)
                 .foregroundColor(Theme.textPrimary)
                 .padding(.horizontal, 16)
-                .padding(.vertical, 10)
+                .padding(.vertical, 12)
                 .background(Theme.cardBackgroundLight)
-                .cornerRadius(8)
+                .cornerRadius(12)
         }
     }
 }
@@ -411,7 +424,7 @@ struct StatePickerSheet: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Theme.background.ignoresSafeArea()
+                Theme.electricBlue.ignoresSafeArea()
                 
                 List(filteredStates, id: \.self) { state in
                     Button(action: {
@@ -421,6 +434,7 @@ struct StatePickerSheet: View {
                         HStack {
                             Text(state.fullName)
                                 .foregroundColor(Theme.textPrimary)
+                                .font(Theme.bodyFont)
                             
                             Spacer()
                             
@@ -428,6 +442,10 @@ struct StatePickerSheet: View {
                                 Text("No Tax")
                                     .font(Theme.captionFont)
                                     .foregroundColor(Theme.primaryGreen)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(Theme.primaryGreen.opacity(0.1))
+                                    .cornerRadius(4)
                             }
                             
                             if state == selectedState {
@@ -437,6 +455,7 @@ struct StatePickerSheet: View {
                         }
                     }
                     .listRowBackground(Theme.cardBackground)
+                    .listRowSeparatorTint(Theme.textMuted.opacity(0.2))
                 }
                 .listStyle(.plain)
                 .searchable(text: $searchText, prompt: "Search states")

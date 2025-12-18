@@ -30,8 +30,7 @@ struct SettingsView: View {
     
     var body: some View {
         ZStack {
-            Theme.backgroundGradient
-                .ignoresSafeArea()
+            ElectricBackground()
             
             ScrollView {
                 VStack(spacing: 24) {
@@ -51,6 +50,7 @@ struct SettingsView: View {
                     legalSection
                 }
                 .padding()
+                .padding(.bottom, 90) // Account for capsule tab bar
             }
         }
         .navigationTitle("Settings")
@@ -360,8 +360,7 @@ struct FilingStatusPicker: View {
     
     var body: some View {
         ZStack {
-            Theme.backgroundGradient
-                .ignoresSafeArea()
+            ElectricBackground()
             
             List(FilingStatus.allCases, id: \.self) { status in
                 Button(action: {
