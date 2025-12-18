@@ -10,12 +10,12 @@ import SwiftUI
 struct CapsuleTabBar: View {
     @Binding var selectedTab: Int
     
-    // Tab Items
+    // Tab Items - Updated to include Payments
     let items: [(image: String, title: String)] = [
         ("house.fill", "Home"),
         ("dollarsign.circle.fill", "Income"),
         ("list.bullet.rectangle.portrait.fill", "Deductions"),
-        ("chart.pie.fill", "Summary"),
+        ("creditcard.fill", "Payments"),
         ("gearshape.fill", "Settings")
     ]
     

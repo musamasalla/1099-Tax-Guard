@@ -25,6 +25,8 @@ struct SettingsView: View {
     @State private var notificationsEnabled = true
     @State private var showStatePicker = false
     @State private var showPaywall = false
+    @State private var showTaxCalculator = false
+    @State private var showYearEndSummary = false
     
     private var settings: UserSettings? { userSettings.first }
     
@@ -36,6 +38,9 @@ struct SettingsView: View {
                 VStack(spacing: 24) {
                     // Subscription status
                     subscriptionSection
+                    
+                    // Tax Tools (Calculator, Summary)
+                    taxToolsSection
                     
                     // Tax settings
                     taxSettingsSection
@@ -120,6 +125,73 @@ struct SettingsView: View {
                     .cornerRadius(12)
                 }
             }
+        }
+    }
+    
+    // MARK: - Tax Tools Section
+    private var taxToolsSection: some View {
+        VStack(spacing: 12) {
+            Text("Tax Tools")
+                .font(Theme.captionFont)
+                .foregroundColor(Theme.textSecondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            VStack(spacing: 0) {
+                // Tax Calculator
+                NavigationLink(destination: TaxCalculatorView()) {
+                    HStack {
+                        Image(systemName: "function")
+                            .font(.title2)
+                            .foregroundColor(Theme.primaryGreen)
+                            .frame(width: 32)
+                        
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Tax Calculator")
+                                .font(Theme.subheadlineFont)
+                                .foregroundColor(Theme.textPrimary)
+                            Text("Estimate your quarterly taxes")
+                                .font(Theme.captionFont)
+                                .foregroundColor(Theme.textSecondary)
+                        }
+                        
+                        Spacer()
+                        
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(Theme.textSecondary)
+                    }
+                    .padding()
+                }
+                
+                Divider()
+                    .background(Theme.textSecondary.opacity(0.3))
+                
+                // Year-End Summary
+                NavigationLink(destination: YearEndSummaryView()) {
+                    HStack {
+                        Image(systemName: "doc.text.fill")
+                            .font(.title2)
+                            .foregroundColor(Theme.primaryBlue)
+                            .frame(width: 32)
+                        
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Year-End Summary")
+                                .font(Theme.subheadlineFont)
+                                .foregroundColor(Theme.textPrimary)
+                            Text("Full year tax report")
+                                .font(Theme.captionFont)
+                                .foregroundColor(Theme.textSecondary)
+                        }
+                        
+                        Spacer()
+                        
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(Theme.textSecondary)
+                    }
+                    .padding()
+                }
+            }
+            .background(Theme.cardBackground)
+            .cornerRadius(12)
         }
     }
     

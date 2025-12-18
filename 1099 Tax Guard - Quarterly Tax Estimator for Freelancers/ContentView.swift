@@ -82,8 +82,7 @@ struct ContentView: View {
                 case 2:
                     NavigationView { DeductionListView() }
                 case 3:
-                    // Mapping "Summary" tab to Tax Calculator
-                    NavigationView { TaxCalculatorView() }
+                    NavigationView { PaymentsView() }
                 case 4:
                     NavigationView { SettingsView() }
                 default:
