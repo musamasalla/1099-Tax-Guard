@@ -19,6 +19,24 @@ struct SettingsView: View {
     )
     private var userSettings: FetchedResults<UserSettings>
     
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Income.date, ascending: false)],
+        animation: .default
+    )
+    private var allIncomes: FetchedResults<Income>
+    
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Deduction.date, ascending: false)],
+        animation: .default
+    )
+    private var allDeductions: FetchedResults<Deduction>
+    
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \TaxPayment.quarter, ascending: true)],
+        animation: .default
+    )
+    private var allPayments: FetchedResults<TaxPayment>
+    
     @State private var selectedState: USState = .california
     @State private var selectedFilingStatus: FilingStatus = .single
     @State private var expectedIncome: String = ""
@@ -27,6 +45,8 @@ struct SettingsView: View {
     @State private var showPaywall = false
     @State private var showTaxCalculator = false
     @State private var showYearEndSummary = false
+    @State private var showCSVShareSheet = false
+    @State private var csvURL: URL?
     
     private var settings: UserSettings? { userSettings.first }
     
@@ -47,6 +67,9 @@ struct SettingsView: View {
                     
                     // Notifications
                     notificationSection
+                    
+                    // Data Export
+                    dataExportSection
                     
                     // About
                     aboutSection
@@ -298,6 +321,64 @@ struct SettingsView: View {
         }
     }
     
+    // MARK: - Data Export Section
+    private var dataExportSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Data Export")
+                .font(Theme.headlineFont)
+                .foregroundColor(Theme.textPrimary)
+            
+            VStack(spacing: 0) {
+                Button(action: exportAllDataToCSV) {
+                    HStack {
+                        Image(systemName: "square.and.arrow.up.fill")
+                            .foregroundColor(Theme.primaryGreen)
+                            .font(.title2)
+                        
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Export All Data (CSV)")
+                                .font(Theme.bodyFont)
+                                .foregroundColor(Theme.textPrimary)
+                            Text("Income, deductions, and payments")
+                                .font(Theme.captionFont)
+                                .foregroundColor(Theme.textMuted)
+                        }
+                        
+                        Spacer()
+                        
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(Theme.textSecondary)
+                    }
+                    .padding()
+                }
+            }
+            .background(Theme.cardBackground)
+            .cornerRadius(12)
+        }
+        .sheet(isPresented: $showCSVShareSheet) {
+            if let url = csvURL {
+                CSVShareSheet(items: [url])
+            }
+        }
+    }
+    
+    // MARK: - Export CSV Action
+    private func exportAllDataToCSV() {
+        let currentYear = QuarterHelper.currentYear()
+        
+        if let csvData = CSVExportService.shared.exportAllDataToCSV(
+            incomes: Array(allIncomes),
+            deductions: Array(allDeductions),
+            payments: Array(allPayments),
+            year: currentYear
+        ) {
+            if let url = CSVExportService.shared.saveCSV(data: csvData, fileName: "TaxGuard_\(currentYear)_Export") {
+                csvURL = url
+                showCSVShareSheet = true
+            }
+        }
+    }
+    
     // MARK: - About Section
     private var aboutSection: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -462,6 +543,17 @@ struct FilingStatusPicker: View {
         .navigationTitle("Filing Status")
         .navigationBarTitleDisplayMode(.inline)
     }
+}
+
+// MARK: - CSV ShareSheet
+struct CSVShareSheet: UIViewControllerRepresentable {
+    let items: [Any]
+    
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: items, applicationActivities: nil)
+    }
+    
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
 #Preview {
