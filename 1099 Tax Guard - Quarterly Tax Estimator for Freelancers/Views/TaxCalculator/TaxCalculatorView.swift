@@ -70,25 +70,30 @@ struct TaxCalculatorView: View {
     }
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                // Amount to Set Aside - PROMINENT
-                setAsideCard
-                
-                // Income & Deductions summary
-                incomeDeductionsSummary
-                
-                // Tax breakdown
-                taxBreakdownSection
-                
-                // Quarterly due dates
-                quarterlyDueDates
-                
-                // Effective rate & tips
-                taxTipsCard
+        ZStack {
+            ElectricBackground()
+                .ignoresSafeArea()
+            
+            ScrollView {
+                VStack(spacing: 20) {
+                    // Amount to Set Aside - PROMINENT
+                    setAsideCard
+                    
+                    // Income & Deductions summary
+                    incomeDeductionsSummary
+                    
+                    // Tax breakdown
+                    taxBreakdownSection
+                    
+                    // Quarterly due dates
+                    quarterlyDueDates
+                    
+                    // Effective rate & tips
+                    taxTipsCard
+                }
+                .padding()
+                .padding(.bottom, 90) // Account for capsule tab bar
             }
-            .padding()
-            .padding(.bottom, 90) // Account for capsule tab bar
         }
         .navigationTitle("Tax Calculator")
         .navigationBarTitleDisplayMode(.inline)

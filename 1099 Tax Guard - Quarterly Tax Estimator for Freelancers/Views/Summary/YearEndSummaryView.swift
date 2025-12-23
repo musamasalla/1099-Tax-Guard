@@ -93,27 +93,32 @@ struct YearEndSummaryView: View {
     }
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                // Year selector
-                yearSelector
-                
-                // Summary cards
-                summaryCards
-                
-                // Income by quarter
-                incomeByQuarterSection
-                
-                // Deductions by category
-                deductionsByCategorySection
-                
-                // Tax payments
-                taxPaymentsSection
-                
-                // Export button
-                exportSection
+        ZStack {
+            ElectricBackground()
+                .ignoresSafeArea()
+            
+            ScrollView {
+                VStack(spacing: 20) {
+                    // Year selector
+                    yearSelector
+                    
+                    // Summary cards
+                    summaryCards
+                    
+                    // Income by quarter
+                    incomeByQuarterSection
+                    
+                    // Deductions by category
+                    deductionsByCategorySection
+                    
+                    // Tax payments
+                    taxPaymentsSection
+                    
+                    // Export button
+                    exportSection
+                }
+                .padding()
             }
-            .padding()
         }
         .navigationTitle("Year-End Summary")
         .navigationBarTitleDisplayMode(.inline)

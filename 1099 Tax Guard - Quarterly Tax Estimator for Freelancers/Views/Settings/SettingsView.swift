@@ -51,31 +51,36 @@ struct SettingsView: View {
     private var settings: UserSettings? { userSettings.first }
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                // Subscription status
-                subscriptionSection
-                
-                // Tax Tools (Calculator, Summary)
-                taxToolsSection
-                
-                // Tax settings
-                taxSettingsSection
-                
-                // Notifications
-                notificationSection
-                
-                // Data Export
-                dataExportSection
-                
-                // About
-                aboutSection
-                
-                // Legal
-                legalSection
+        ZStack {
+            ElectricBackground()
+                .ignoresSafeArea()
+            
+            ScrollView {
+                VStack(spacing: 24) {
+                    // Subscription status
+                    subscriptionSection
+                    
+                    // Tax Tools (Calculator, Summary)
+                    taxToolsSection
+                    
+                    // Tax settings
+                    taxSettingsSection
+                    
+                    // Notifications
+                    notificationSection
+                    
+                    // Data Export
+                    dataExportSection
+                    
+                    // About
+                    aboutSection
+                    
+                    // Legal
+                    legalSection
+                }
+                .padding()
+                .padding(.bottom, 90) // Account for capsule tab bar
             }
-            .padding()
-            .padding(.bottom, 90) // Account for capsule tab bar
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)

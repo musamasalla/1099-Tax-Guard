@@ -91,34 +91,37 @@ struct DashboardView: View {
     }
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                // Header with greeting
-                headerSection
-                
-                // Main cards
-                VStack(spacing: 20) {
-                    // Current Quarter Income Card
-                    incomeCard
+        ZStack {
+            ElectricBackground()
+                .ignoresSafeArea()
+            
+            ScrollView {
+                VStack(spacing: 24) {
+                    // Header with greeting
+                    headerSection
                     
-                    // Estimated Tax Owed Card
-                    taxOwedCard
+                    // Main cards
+                    VStack(spacing: 20) {
+                        // Current Quarter Income Card
+                        incomeCard
+                        
+                        // Estimated Tax Owed Card
+                        taxOwedCard
+                        
+                        // Next Payment Due Card
+                        nextPaymentCard
+                    }
+                    .padding(.horizontal)
                     
-                    // Next Payment Due Card
-                    nextPaymentCard
+                    // Quick Actions
+                    quickActionsSection
+                    
+                    // Recent Activity
+                    recentActivitySection
                 }
-                .padding(.horizontal)
-                
-                // Quick Actions
-                quickActionsSection
-                
-                // Recent Activity
-                recentActivitySection
+                .padding(.top, 60) // Safe area top padding
+                .padding(.bottom, 90) // Account for capsule tab bar
             }
-            .padding(.bottom, 90) // Account for capsule tab bar
-        }
-        .safeAreaInset(edge: .top) {
-            Color.clear.frame(height: 0) // Ensures content respects safe area
         }
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showAddIncome) {
