@@ -94,8 +94,10 @@ struct TaxCalculatorView: View {
                 .padding(.bottom, 90) // Account for capsule tab bar
             }
         }
+        .ignoresSafeArea(edges: .top)
         .navigationTitle("Tax Calculator")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(.hidden, for: .navigationBar)
     }
     
     // MARK: - Set Aside Card (PROMINENT)

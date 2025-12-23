@@ -101,8 +101,10 @@ struct PaymentsView: View {
                 .padding(.bottom, 90) // Account for capsule tab bar
             }
         }
+        .ignoresSafeArea(edges: .top)
         .navigationTitle("Payments")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(.hidden, for: .navigationBar)
         .sheet(isPresented: $showPaymentSheet) {
             RecordPaymentSheet(quarter: selectedQuarter, year: currentYear, suggestedAmount: suggestedPayment)
         }

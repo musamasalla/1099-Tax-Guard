@@ -79,8 +79,10 @@ struct IncomeListView: View {
                 }
             }
         }
+        .ignoresSafeArea(edges: .top)
         .navigationTitle("Income")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(.hidden, for: .navigationBar)
         .searchable(text: $searchText, prompt: "Search by client")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

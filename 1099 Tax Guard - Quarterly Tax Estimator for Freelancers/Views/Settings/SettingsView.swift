@@ -81,8 +81,10 @@ struct SettingsView: View {
                 .padding(.bottom, 90) // Account for capsule tab bar
             }
         }
+        .ignoresSafeArea(edges: .top)
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(.hidden, for: .navigationBar)
         .onAppear(perform: loadSettings)
         .sheet(isPresented: $showStatePicker) {
             StatePickerSheet(selectedState: $selectedState, isPresented: $showStatePicker)
