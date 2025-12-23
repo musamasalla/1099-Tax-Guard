@@ -122,6 +122,7 @@ struct DashboardView: View {
                 .padding(.bottom, 90) // Account for capsule tab bar
             }
         }
+        .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showAddIncome) {
             AddIncomeView()
         }

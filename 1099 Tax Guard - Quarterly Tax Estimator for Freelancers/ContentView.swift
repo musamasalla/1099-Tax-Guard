@@ -76,15 +76,15 @@ struct ContentView: View {
             Group {
                 switch selectedTab {
                 case 0:
-                    NavigationView { DashboardView() }
+                    NavigationStack { DashboardView() }
                 case 1:
-                    NavigationView { IncomeListView() }
+                    NavigationStack { IncomeListView() }
                 case 2:
-                    NavigationView { DeductionListView() }
+                    NavigationStack { DeductionListView() }
                 case 3:
-                    NavigationView { PaymentsView() }
+                    NavigationStack { PaymentsView() }
                 case 4:
-                    NavigationView { SettingsView() }
+                    NavigationStack { SettingsView() }
                 default:
                     EmptyView()
                 }
