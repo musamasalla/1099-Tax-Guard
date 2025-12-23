@@ -61,23 +61,18 @@ struct IncomeListView: View {
     }
     
     var body: some View {
-        ZStack {
-            ElectricBackground()
-                .ignoresSafeArea(edges: .top)
+        VStack(spacing: 0) {
+            // Summary header
+            summaryHeader
             
-            VStack(spacing: 0) {
-                // Summary header
-                summaryHeader
-                
-                // Quarter filter
-                quarterFilter
-                
-                // Income list
-                if filteredIncomes.isEmpty {
-                    emptyState
-                } else {
-                    incomeList
-                }
+            // Quarter filter
+            quarterFilter
+            
+            // Income list
+            if filteredIncomes.isEmpty {
+                emptyState
+            } else {
+                incomeList
             }
         }
         .navigationTitle("Income")

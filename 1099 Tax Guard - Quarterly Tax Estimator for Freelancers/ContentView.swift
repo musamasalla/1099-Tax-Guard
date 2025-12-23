@@ -77,14 +77,19 @@ struct ContentView: View {
                 switch selectedTab {
                 case 0:
                     NavigationStack { DashboardView() }
+                        .toolbarBackground(.hidden, for: .navigationBar)
                 case 1:
                     NavigationStack { IncomeListView() }
+                        .toolbarBackground(.hidden, for: .navigationBar)
                 case 2:
                     NavigationStack { DeductionListView() }
+                        .toolbarBackground(.hidden, for: .navigationBar)
                 case 3:
                     NavigationStack { PaymentsView() }
+                        .toolbarBackground(.hidden, for: .navigationBar)
                 case 4:
                     NavigationStack { SettingsView() }
+                        .toolbarBackground(.hidden, for: .navigationBar)
                 default:
                     EmptyView()
                 }

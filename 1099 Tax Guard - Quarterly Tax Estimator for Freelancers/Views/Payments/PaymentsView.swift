@@ -80,27 +80,22 @@ struct PaymentsView: View {
     }
     
     var body: some View {
-        ZStack {
-            ElectricBackground()
-                .ignoresSafeArea(edges: .top)
-            
-            ScrollView {
-                VStack(spacing: 20) {
-                    // Next payment header
-                    nextPaymentHeader
-                    
-                    // Quick pay button
-                    payNowSection
-                    
-                    // Quarterly payment cards
-                    quarterlyPaymentsSection
-                    
-                    // Payment history
-                    paymentHistorySection
-                }
-                .padding()
-                .padding(.bottom, 90) // Account for capsule tab bar
+        ScrollView {
+            VStack(spacing: 20) {
+                // Next payment header
+                nextPaymentHeader
+                
+                // Quick pay button
+                payNowSection
+                
+                // Quarterly payment cards
+                quarterlyPaymentsSection
+                
+                // Payment history
+                paymentHistorySection
             }
+            .padding()
+            .padding(.bottom, 90) // Account for capsule tab bar
         }
         .navigationTitle("Payments")
         .navigationBarTitleDisplayMode(.inline)

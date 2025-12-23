@@ -44,23 +44,18 @@ struct DeductionListView: View {
     }
     
     var body: some View {
-        ZStack {
-            ElectricBackground()
-                .ignoresSafeArea(edges: .top)
+        VStack(spacing: 0) {
+            // Summary header
+            summaryHeader
             
-            VStack(spacing: 0) {
-                // Summary header
-                summaryHeader
-                
-                // Category filter
-                categoryFilter
-                
-                // Deduction list
-                if filteredDeductions.isEmpty {
-                    emptyState
-                } else {
-                    deductionList
-                }
+            // Category filter
+            categoryFilter
+            
+            // Deduction list
+            if filteredDeductions.isEmpty {
+                emptyState
+            } else {
+                deductionList
             }
         }
         .navigationTitle("Deductions")

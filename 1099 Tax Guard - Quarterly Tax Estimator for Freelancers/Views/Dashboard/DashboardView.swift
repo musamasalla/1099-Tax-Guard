@@ -91,36 +91,34 @@ struct DashboardView: View {
     }
     
     var body: some View {
-        ZStack {
-            ElectricBackground()
-                .ignoresSafeArea(edges: .top)
-            
-            ScrollView {
-                VStack(spacing: 24) {
-                    // Header with greeting
-                    headerSection
+        ScrollView {
+            VStack(spacing: 24) {
+                // Header with greeting
+                headerSection
+                
+                // Main cards
+                VStack(spacing: 20) {
+                    // Current Quarter Income Card
+                    incomeCard
                     
-                    // Main cards
-                    VStack(spacing: 20) {
-                        // Current Quarter Income Card
-                        incomeCard
-                        
-                        // Estimated Tax Owed Card
-                        taxOwedCard
-                        
-                        // Next Payment Due Card
-                        nextPaymentCard
-                    }
-                    .padding(.horizontal)
+                    // Estimated Tax Owed Card
+                    taxOwedCard
                     
-                    // Quick Actions
-                    quickActionsSection
-                    
-                    // Recent Activity
-                    recentActivitySection
+                    // Next Payment Due Card
+                    nextPaymentCard
                 }
-                .padding(.bottom, 90) // Account for capsule tab bar
+                .padding(.horizontal)
+                
+                // Quick Actions
+                quickActionsSection
+                
+                // Recent Activity
+                recentActivitySection
             }
+            .padding(.bottom, 90) // Account for capsule tab bar
+        }
+        .safeAreaInset(edge: .top) {
+            Color.clear.frame(height: 0) // Ensures content respects safe area
         }
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showAddIncome) {
