@@ -542,8 +542,10 @@ struct FilingStatusPicker: View {
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
         }
+        .ignoresSafeArea(edges: .top)
         .navigationTitle("Filing Status")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(.hidden, for: .navigationBar)
     }
 }
 

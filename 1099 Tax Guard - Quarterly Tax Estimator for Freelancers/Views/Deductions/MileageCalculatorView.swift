@@ -56,8 +56,10 @@ struct MileageCalculatorView: View {
                     .padding()
                 }
             }
+            .ignoresSafeArea(edges: .top)
             .navigationTitle("Log Mileage")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {

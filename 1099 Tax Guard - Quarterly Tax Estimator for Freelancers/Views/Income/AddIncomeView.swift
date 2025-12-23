@@ -58,8 +58,10 @@ struct AddIncomeView: View {
                     .padding()
                 }
             }
+            .ignoresSafeArea(edges: .top)
             .navigationTitle("Add Income")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {

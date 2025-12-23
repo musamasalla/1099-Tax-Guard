@@ -413,7 +413,9 @@ struct RecordPaymentSheet: View {
                 }
                 .padding()
             }
+            .ignoresSafeArea(edges: .top)
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {

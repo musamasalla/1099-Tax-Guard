@@ -55,8 +55,10 @@ struct AddDeductionView: View {
                     .padding()
                 }
             }
+            .ignoresSafeArea(edges: .top)
             .navigationTitle("Add Deduction")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
