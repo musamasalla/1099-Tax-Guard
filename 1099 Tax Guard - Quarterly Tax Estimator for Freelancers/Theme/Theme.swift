@@ -13,12 +13,12 @@ struct Theme {
     // MARK: - Electric Blue Palette
     
     // Main Background
-    static let electricBlue = Color.black // Pivoting to Midnight Theme
-    static let deepBlue = Color(hex: "1C1C1E") // Dark Gray for cards/shadows
-    static let background = electricBlue
+    static let electricBlue = Color(hex: "4136F1") // The core brand color
+    static let deepBlue = Color(hex: "2A22A2") // For gradients/shadows
+    static let background = electricBlue // Alias for compatibility
     
     // Accents
-    static let neonLime = Color(hex: "D0FF00") // Slightly punchier lime for black bg
+    static let neonLime = Color(hex: "E8FE5A") // Primary Actions / Success
     static let pureWhite = Color.white
     static let semiWhite = Color.white.opacity(0.9)
     static let softWhite = Color.white.opacity(0.6)

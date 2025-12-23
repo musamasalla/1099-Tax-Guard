@@ -71,6 +71,9 @@ struct TaxCalculatorView: View {
     
     var body: some View {
         ZStack {
+            ElectricBackground()
+                .ignoresSafeArea(edges: .top)
+            
             ScrollView {
                 VStack(spacing: 20) {
                     // Amount to Set Aside - PROMINENT

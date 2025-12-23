@@ -77,19 +77,14 @@ struct ContentView: View {
                 switch selectedTab {
                 case 0:
                     NavigationStack { DashboardView() }
-                        .background(ElectricBackground())
                 case 1:
                     NavigationStack { IncomeListView() }
-                        .background(ElectricBackground())
                 case 2:
                     NavigationStack { DeductionListView() }
-                        .background(ElectricBackground())
                 case 3:
                     NavigationStack { PaymentsView() }
-                        .background(ElectricBackground())
                 case 4:
                     NavigationStack { SettingsView() }
-                        .background(ElectricBackground())
                 default:
                     EmptyView()
                 }

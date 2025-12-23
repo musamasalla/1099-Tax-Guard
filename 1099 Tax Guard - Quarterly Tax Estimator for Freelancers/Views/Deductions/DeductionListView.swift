@@ -45,6 +45,9 @@ struct DeductionListView: View {
     
     var body: some View {
         ZStack {
+            ElectricBackground()
+                .ignoresSafeArea(edges: .top)
+            
             VStack(spacing: 0) {
                 // Summary header
                 summaryHeader
