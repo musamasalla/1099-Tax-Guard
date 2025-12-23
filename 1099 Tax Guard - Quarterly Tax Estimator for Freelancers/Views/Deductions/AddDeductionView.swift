@@ -31,6 +31,7 @@ struct AddDeductionView: View {
         NavigationView {
             ZStack {
                 ElectricBackground()
+                    .ignoresSafeArea(edges: .top)
                 
                 ScrollView {
                     VStack(spacing: 24) {
@@ -55,7 +56,6 @@ struct AddDeductionView: View {
                     .padding()
                 }
             }
-            .ignoresSafeArea(edges: .top)
             .navigationTitle("Add Deduction")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.hidden, for: .navigationBar)

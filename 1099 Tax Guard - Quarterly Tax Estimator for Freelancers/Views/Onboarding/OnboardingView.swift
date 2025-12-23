@@ -460,7 +460,6 @@ struct StatePickerSheet: View {
                 .listStyle(.plain)
                 .searchable(text: $searchText, prompt: "Search states")
             }
-            .ignoresSafeArea(edges: .top)
             .navigationTitle("Select State")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.hidden, for: .navigationBar)

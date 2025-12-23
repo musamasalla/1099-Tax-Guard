@@ -93,6 +93,7 @@ struct DashboardView: View {
     var body: some View {
         ZStack {
             ElectricBackground()
+                .ignoresSafeArea(edges: .top)
             
             ScrollView {
                 VStack(spacing: 24) {

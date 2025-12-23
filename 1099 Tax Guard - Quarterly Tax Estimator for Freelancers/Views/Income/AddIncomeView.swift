@@ -34,6 +34,7 @@ struct AddIncomeView: View {
         NavigationView {
             ZStack {
                 ElectricBackground()
+                    .ignoresSafeArea(edges: .top)
                 
                 ScrollView {
                     VStack(spacing: 24) {
@@ -58,7 +59,6 @@ struct AddIncomeView: View {
                     .padding()
                 }
             }
-            .ignoresSafeArea(edges: .top)
             .navigationTitle("Add Income")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.hidden, for: .navigationBar)

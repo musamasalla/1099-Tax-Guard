@@ -32,6 +32,7 @@ struct MileageCalculatorView: View {
         NavigationView {
             ZStack {
                 ElectricBackground()
+                    .ignoresSafeArea(edges: .top)
                 
                 ScrollView {
                     VStack(spacing: 24) {
@@ -56,7 +57,6 @@ struct MileageCalculatorView: View {
                     .padding()
                 }
             }
-            .ignoresSafeArea(edges: .top)
             .navigationTitle("Log Mileage")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.hidden, for: .navigationBar)

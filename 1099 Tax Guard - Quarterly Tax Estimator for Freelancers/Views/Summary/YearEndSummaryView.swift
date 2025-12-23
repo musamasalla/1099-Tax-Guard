@@ -95,6 +95,7 @@ struct YearEndSummaryView: View {
     var body: some View {
         ZStack {
             ElectricBackground()
+                .ignoresSafeArea(edges: .top)
             
             ScrollView {
                 VStack(spacing: 20) {
@@ -119,7 +120,6 @@ struct YearEndSummaryView: View {
                 .padding()
             }
         }
-        .ignoresSafeArea(edges: .top)
         .navigationTitle("Year-End Summary")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.hidden, for: .navigationBar)

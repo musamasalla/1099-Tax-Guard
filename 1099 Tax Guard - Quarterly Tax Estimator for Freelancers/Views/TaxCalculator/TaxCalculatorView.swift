@@ -72,6 +72,7 @@ struct TaxCalculatorView: View {
     var body: some View {
         ZStack {
             ElectricBackground()
+                .ignoresSafeArea(edges: .top)
             
             ScrollView {
                 VStack(spacing: 20) {
@@ -94,7 +95,6 @@ struct TaxCalculatorView: View {
                 .padding(.bottom, 90) // Account for capsule tab bar
             }
         }
-        .ignoresSafeArea(edges: .top)
         .navigationTitle("Tax Calculator")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.hidden, for: .navigationBar)

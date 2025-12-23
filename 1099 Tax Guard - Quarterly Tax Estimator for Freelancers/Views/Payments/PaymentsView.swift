@@ -82,6 +82,7 @@ struct PaymentsView: View {
     var body: some View {
         ZStack {
             ElectricBackground()
+                .ignoresSafeArea(edges: .top)
             
             ScrollView {
                 VStack(spacing: 20) {
@@ -101,7 +102,6 @@ struct PaymentsView: View {
                 .padding(.bottom, 90) // Account for capsule tab bar
             }
         }
-        .ignoresSafeArea(edges: .top)
         .navigationTitle("Payments")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.hidden, for: .navigationBar)
@@ -334,6 +334,7 @@ struct RecordPaymentSheet: View {
         NavigationView {
             ZStack {
                 ElectricBackground()
+                    .ignoresSafeArea(edges: .top)
                 
                 VStack(spacing: 24) {
                     // Header
@@ -413,7 +414,6 @@ struct RecordPaymentSheet: View {
                 }
                 .padding()
             }
-            .ignoresSafeArea(edges: .top)
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.hidden, for: .navigationBar)
             .toolbar {

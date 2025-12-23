@@ -53,6 +53,7 @@ struct SettingsView: View {
     var body: some View {
         ZStack {
             ElectricBackground()
+                .ignoresSafeArea(edges: .top)
             
             ScrollView {
                 VStack(spacing: 24) {
@@ -81,7 +82,6 @@ struct SettingsView: View {
                 .padding(.bottom, 90) // Account for capsule tab bar
             }
         }
-        .ignoresSafeArea(edges: .top)
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.hidden, for: .navigationBar)
@@ -516,6 +516,7 @@ struct FilingStatusPicker: View {
     var body: some View {
         ZStack {
             ElectricBackground()
+                .ignoresSafeArea(edges: .top)
             
             List(FilingStatus.allCases, id: \.self) { status in
                 Button(action: {
@@ -542,7 +543,6 @@ struct FilingStatusPicker: View {
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
         }
-        .ignoresSafeArea(edges: .top)
         .navigationTitle("Filing Status")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.hidden, for: .navigationBar)
