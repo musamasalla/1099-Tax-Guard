@@ -52,9 +52,6 @@ struct SettingsView: View {
     
     var body: some View {
         ZStack {
-            ElectricBackground()
-                .ignoresSafeArea(edges: .top)
-            
             ScrollView {
                 VStack(spacing: 24) {
                     // Subscription status
@@ -515,9 +512,6 @@ struct FilingStatusPicker: View {
     
     var body: some View {
         ZStack {
-            ElectricBackground()
-                .ignoresSafeArea(edges: .top)
-            
             List(FilingStatus.allCases, id: \.self) { status in
                 Button(action: {
                     selectedStatus = status
