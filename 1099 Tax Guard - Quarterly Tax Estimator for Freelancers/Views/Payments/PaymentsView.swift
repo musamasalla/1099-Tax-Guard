@@ -104,7 +104,6 @@ struct PaymentsView: View {
         }
         .navigationTitle("Payments")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.hidden, for: .navigationBar)
         .sheet(isPresented: $showPaymentSheet) {
             RecordPaymentSheet(quarter: selectedQuarter, year: currentYear, suggestedAmount: suggestedPayment)
         }
@@ -415,7 +414,7 @@ struct RecordPaymentSheet: View {
                 .padding()
             }
             .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.hidden, for: .navigationBar)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {

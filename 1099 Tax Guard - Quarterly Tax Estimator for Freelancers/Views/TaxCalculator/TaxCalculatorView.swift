@@ -97,7 +97,6 @@ struct TaxCalculatorView: View {
         }
         .navigationTitle("Tax Calculator")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.hidden, for: .navigationBar)
     }
     
     // MARK: - Set Aside Card (PROMINENT)

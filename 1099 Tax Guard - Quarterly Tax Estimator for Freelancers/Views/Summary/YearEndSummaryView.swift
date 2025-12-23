@@ -122,7 +122,6 @@ struct YearEndSummaryView: View {
         }
         .navigationTitle("Year-End Summary")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.hidden, for: .navigationBar)
         .sheet(isPresented: $showPaywall) {
             PaywallView()
         }

@@ -65,7 +65,6 @@ struct DeductionListView: View {
         }
         .navigationTitle("Deductions")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.hidden, for: .navigationBar)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {

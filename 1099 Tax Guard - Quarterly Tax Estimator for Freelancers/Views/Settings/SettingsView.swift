@@ -84,7 +84,6 @@ struct SettingsView: View {
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.hidden, for: .navigationBar)
         .onAppear(perform: loadSettings)
         .sheet(isPresented: $showStatePicker) {
             StatePickerSheet(selectedState: $selectedState, isPresented: $showStatePicker)
@@ -545,7 +544,6 @@ struct FilingStatusPicker: View {
         }
         .navigationTitle("Filing Status")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.hidden, for: .navigationBar)
     }
 }
 
