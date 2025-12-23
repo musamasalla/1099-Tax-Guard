@@ -6,14 +6,65 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E8EDED352EFA810F00A16725 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8EDED342EFA810F00A16725 /* WidgetKit.framework */; };
+		E8EDED372EFA810F00A16725 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8EDED362EFA810F00A16725 /* SwiftUI.framework */; };
+		E8EDED442EFA811400A16725 /* TaxGuardWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E8EDED322EFA810F00A16725 /* TaxGuardWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E8EDED422EFA811400A16725 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E812D0462EF1E0C800509694 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E8EDED312EFA810F00A16725;
+			remoteInfo = TaxGuardWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E8EDED452EFA811400A16725 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				E8EDED442EFA811400A16725 /* TaxGuardWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		E812D04E2EF1E0C900509694 /* 1099 Tax Guard - Quarterly Tax Estimator for Freelancers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "1099 Tax Guard - Quarterly Tax Estimator for Freelancers.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8EDED322EFA810F00A16725 /* TaxGuardWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TaxGuardWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8EDED342EFA810F00A16725 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		E8EDED362EFA810F00A16725 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E8EDED482EFA811400A16725 /* Exceptions for "TaxGuardWidget" folder in "TaxGuardWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = E8EDED312EFA810F00A16725 /* TaxGuardWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E812D0502EF1E0C900509694 /* 1099 Tax Guard - Quarterly Tax Estimator for Freelancers */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "1099 Tax Guard - Quarterly Tax Estimator for Freelancers";
+			sourceTree = "<group>";
+		};
+		E8EDED382EFA810F00A16725 /* TaxGuardWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E8EDED482EFA811400A16725 /* Exceptions for "TaxGuardWidget" folder in "TaxGuardWidgetExtension" target */,
+			);
+			path = TaxGuardWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -26,6 +77,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E8EDED2F2EFA810F00A16725 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E8EDED372EFA810F00A16725 /* SwiftUI.framework in Frameworks */,
+				E8EDED352EFA810F00A16725 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -33,6 +93,8 @@
 			isa = PBXGroup;
 			children = (
 				E812D0502EF1E0C900509694 /* 1099 Tax Guard - Quarterly Tax Estimator for Freelancers */,
+				E8EDED382EFA810F00A16725 /* TaxGuardWidget */,
+				E8EDED332EFA810F00A16725 /* Frameworks */,
 				E812D04F2EF1E0C900509694 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,8 +103,18 @@
 			isa = PBXGroup;
 			children = (
 				E812D04E2EF1E0C900509694 /* 1099 Tax Guard - Quarterly Tax Estimator for Freelancers.app */,
+				E8EDED322EFA810F00A16725 /* TaxGuardWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E8EDED332EFA810F00A16725 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E8EDED342EFA810F00A16725 /* WidgetKit.framework */,
+				E8EDED362EFA810F00A16725 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -55,10 +127,12 @@
 				E812D04A2EF1E0C800509694 /* Sources */,
 				E812D04B2EF1E0C800509694 /* Frameworks */,
 				E812D04C2EF1E0C800509694 /* Resources */,
+				E8EDED452EFA811400A16725 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				E8EDED432EFA811400A16725 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E812D0502EF1E0C900509694 /* 1099 Tax Guard - Quarterly Tax Estimator for Freelancers */,
@@ -69,6 +143,28 @@
 			productName = "1099 Tax Guard - Quarterly Tax Estimator for Freelancers";
 			productReference = E812D04E2EF1E0C900509694 /* 1099 Tax Guard - Quarterly Tax Estimator for Freelancers.app */;
 			productType = "com.apple.product-type.application";
+		};
+		E8EDED312EFA810F00A16725 /* TaxGuardWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E8EDED492EFA811400A16725 /* Build configuration list for PBXNativeTarget "TaxGuardWidgetExtension" */;
+			buildPhases = (
+				E8EDED2E2EFA810F00A16725 /* Sources */,
+				E8EDED2F2EFA810F00A16725 /* Frameworks */,
+				E8EDED302EFA810F00A16725 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E8EDED382EFA810F00A16725 /* TaxGuardWidget */,
+			);
+			name = TaxGuardWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = TaxGuardWidgetExtension;
+			productReference = E8EDED322EFA810F00A16725 /* TaxGuardWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -81,6 +177,9 @@
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					E812D04D2EF1E0C800509694 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					E8EDED312EFA810F00A16725 = {
 						CreatedOnToolsVersion = 26.2;
 					};
 				};
@@ -100,12 +199,20 @@
 			projectRoot = "";
 			targets = (
 				E812D04D2EF1E0C800509694 /* 1099 Tax Guard - Quarterly Tax Estimator for Freelancers */,
+				E8EDED312EFA810F00A16725 /* TaxGuardWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		E812D04C2EF1E0C800509694 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8EDED302EFA810F00A16725 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +229,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E8EDED2E2EFA810F00A16725 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E8EDED432EFA811400A16725 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E8EDED312EFA810F00A16725 /* TaxGuardWidgetExtension */;
+			targetProxy = E8EDED422EFA811400A16725 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		E812D0572EF1E0D800509694 /* Debug */ = {
@@ -310,6 +432,66 @@
 			};
 			name = Release;
 		};
+		E8EDED462EFA811400A16725 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9Q4TV94VR7;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TaxGuardWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TaxGuardWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "-099-Tax-Guard.-099-Tax-Guard---Quarterly-Tax-Estimator-for-Freelancers.TaxGuardWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E8EDED472EFA811400A16725 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9Q4TV94VR7;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TaxGuardWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TaxGuardWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "-099-Tax-Guard.-099-Tax-Guard---Quarterly-Tax-Estimator-for-Freelancers.TaxGuardWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -327,6 +509,15 @@
 			buildConfigurations = (
 				E812D05A2EF1E0D800509694 /* Debug */,
 				E812D05B2EF1E0D800509694 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E8EDED492EFA811400A16725 /* Build configuration list for PBXNativeTarget "TaxGuardWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E8EDED462EFA811400A16725 /* Debug */,
+				E8EDED472EFA811400A16725 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

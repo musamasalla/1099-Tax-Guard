@@ -2,7 +2,7 @@
 //  TaxGuardWidget.swift
 //  TaxGuardWidget
 //
-//  Created by Musa Masalla on 2025/12/19.
+//  Created by Musa Masalla on 2025/12/23.
 //
 
 import WidgetKit
@@ -35,8 +35,8 @@ struct TaxGuardProvider: TimelineProvider {
         let entry = TaxGuardEntry(
             date: Date(),
             quarterlyTaxDue: 2500,
-            nextDeadline: "Jan 15",
-            daysUntilDeadline: 30,
+            nextDeadline: getNextDeadline(),
+            daysUntilDeadline: getDaysUntilDeadline(),
             totalIncome: 45000,
             totalDeductions: 12000
         )
@@ -44,14 +44,13 @@ struct TaxGuardProvider: TimelineProvider {
     }
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<TaxGuardEntry>) -> Void) {
-        // In production, this would fetch from shared App Group container
         let entry = TaxGuardEntry(
             date: Date(),
-            quarterlyTaxDue: calculateQuarterlyTax(),
+            quarterlyTaxDue: 2500,
             nextDeadline: getNextDeadline(),
             daysUntilDeadline: getDaysUntilDeadline(),
-            totalIncome: getTotalIncome(),
-            totalDeductions: getTotalDeductions()
+            totalIncome: 45000,
+            totalDeductions: 12000
         )
         
         // Update every hour
@@ -60,18 +59,12 @@ struct TaxGuardProvider: TimelineProvider {
         completion(timeline)
     }
     
-    // MARK: - Data Helpers (would use App Groups in production)
-    private func calculateQuarterlyTax() -> Double {
-        // Placeholder - would calculate from shared data
-        return 2500
-    }
-    
     private func getNextDeadline() -> String {
         let deadlines = [
-            (month: 1, day: 15, label: "Jan 15"),  // Q4
-            (month: 4, day: 15, label: "Apr 15"),  // Q1
-            (month: 6, day: 15, label: "Jun 15"),  // Q2
-            (month: 9, day: 15, label: "Sep 15")   // Q3
+            (month: 1, day: 15, label: "Jan 15"),
+            (month: 4, day: 15, label: "Apr 15"),
+            (month: 6, day: 15, label: "Jun 15"),
+            (month: 9, day: 15, label: "Sep 15")
         ]
         
         let now = Date()
@@ -84,25 +77,39 @@ struct TaxGuardProvider: TimelineProvider {
                 return deadline.label
             }
         }
-        
         return "Jan 15"
     }
     
     private func getDaysUntilDeadline() -> Int {
-        // Placeholder
+        let deadlines = [(1, 15), (4, 15), (6, 15), (9, 15)]
+        let now = Date()
+        let calendar = Calendar.current
+        let currentYear = calendar.component(.year, from: now)
+        
+        for (month, day) in deadlines {
+            if let deadlineDate = calendar.date(from: DateComponents(year: currentYear, month: month, day: day)),
+               deadlineDate > now {
+                return calendar.dateComponents([.day], from: now, to: deadlineDate).day ?? 30
+            }
+        }
+        
+        // Next year's Q4
+        if let nextQ4 = calendar.date(from: DateComponents(year: currentYear + 1, month: 1, day: 15)) {
+            return calendar.dateComponents([.day], from: now, to: nextQ4).day ?? 30
+        }
         return 30
-    }
-    
-    private func getTotalIncome() -> Double {
-        return 45000
-    }
-    
-    private func getTotalDeductions() -> Double {
-        return 12000
     }
 }
 
-// MARK: - Widget Views
+// MARK: - Colors
+struct WidgetColors {
+    static let electricBlue = Color(red: 0.255, green: 0.212, blue: 0.945)
+    static let deepBlue = Color(red: 0.165, green: 0.133, blue: 0.635)
+    static let neonLime = Color(red: 0.91, green: 0.996, blue: 0.353)
+    static let primaryGreen = Color(red: 0.06, green: 0.73, blue: 0.51)
+}
+
+// MARK: - Widget Entry View
 struct TaxGuardWidgetEntryView: View {
     var entry: TaxGuardProvider.Entry
     @Environment(\.widgetFamily) var family
@@ -127,12 +134,8 @@ struct SmallWidgetView: View {
     
     var body: some View {
         ZStack {
-            // Electric Blue gradient background
             LinearGradient(
-                colors: [
-                    Color(red: 0.255, green: 0.212, blue: 0.945),
-                    Color(red: 0.165, green: 0.133, blue: 0.635)
-                ],
+                colors: [WidgetColors.electricBlue, WidgetColors.deepBlue],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -140,7 +143,7 @@ struct SmallWidgetView: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Image(systemName: "shield.fill")
-                        .foregroundColor(Color(red: 0.91, green: 0.996, blue: 0.353)) // Neon lime
+                        .foregroundColor(WidgetColors.neonLime)
                         .font(.title3)
                     Spacer()
                     Text(entry.nextDeadline)
@@ -156,7 +159,7 @@ struct SmallWidgetView: View {
                 
                 Text(formatCurrency(entry.quarterlyTaxDue))
                     .font(.title2.bold())
-                    .foregroundColor(Color(red: 0.91, green: 0.996, blue: 0.353))
+                    .foregroundColor(WidgetColors.neonLime)
                 
                 Text("\(entry.daysUntilDeadline) days left")
                     .font(.caption2)
@@ -186,20 +189,16 @@ struct MediumWidgetView: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                colors: [
-                    Color(red: 0.255, green: 0.212, blue: 0.945),
-                    Color(red: 0.165, green: 0.133, blue: 0.635)
-                ],
+                colors: [WidgetColors.electricBlue, WidgetColors.deepBlue],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
             
             HStack(spacing: 16) {
-                // Left side - Tax Due
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
                         Image(systemName: "shield.fill")
-                            .foregroundColor(Color(red: 0.91, green: 0.996, blue: 0.353))
+                            .foregroundColor(WidgetColors.neonLime)
                         Text("1099 Tax Guard")
                             .font(.caption.bold())
                             .foregroundColor(.white)
@@ -213,7 +212,7 @@ struct MediumWidgetView: View {
                     
                     Text(formatCurrency(entry.quarterlyTaxDue))
                         .font(.title.bold())
-                        .foregroundColor(Color(red: 0.91, green: 0.996, blue: 0.353))
+                        .foregroundColor(WidgetColors.neonLime)
                     
                     Text("Due \(entry.nextDeadline)")
                         .font(.caption)
@@ -223,10 +222,9 @@ struct MediumWidgetView: View {
                 Divider()
                     .background(.white.opacity(0.3))
                 
-                // Right side - Stats
                 VStack(alignment: .leading, spacing: 8) {
-                    StatRow(title: "Income", value: formatCurrency(entry.totalIncome), color: .green)
-                    StatRow(title: "Deductions", value: formatCurrency(entry.totalDeductions), color: .blue)
+                    StatRow(title: "Income", value: formatCurrency(entry.totalIncome), color: WidgetColors.primaryGreen)
+                    StatRow(title: "Deductions", value: formatCurrency(entry.totalDeductions), color: WidgetColors.electricBlue)
                     StatRow(title: "Days Left", value: "\(entry.daysUntilDeadline)", color: .orange)
                 }
             }
@@ -273,19 +271,15 @@ struct LargeWidgetView: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                colors: [
-                    Color(red: 0.255, green: 0.212, blue: 0.945),
-                    Color(red: 0.165, green: 0.133, blue: 0.635)
-                ],
+                colors: [WidgetColors.electricBlue, WidgetColors.deepBlue],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
             
             VStack(alignment: .leading, spacing: 16) {
-                // Header
                 HStack {
                     Image(systemName: "shield.fill")
-                        .foregroundColor(Color(red: 0.91, green: 0.996, blue: 0.353))
+                        .foregroundColor(WidgetColors.neonLime)
                         .font(.title2)
                     Text("1099 Tax Guard")
                         .font(.headline)
@@ -300,7 +294,6 @@ struct LargeWidgetView: View {
                         .foregroundColor(.white)
                 }
                 
-                // Main amount
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Quarterly Tax Due")
                         .font(.subheadline)
@@ -308,21 +301,19 @@ struct LargeWidgetView: View {
                     
                     Text(formatCurrency(entry.quarterlyTaxDue))
                         .font(.system(size: 42, weight: .bold))
-                        .foregroundColor(Color(red: 0.91, green: 0.996, blue: 0.353))
+                        .foregroundColor(WidgetColors.neonLime)
                 }
                 
                 Divider()
                     .background(.white.opacity(0.3))
                 
-                // Stats grid
                 HStack(spacing: 20) {
-                    StatCard(title: "YTD Income", value: formatCurrency(entry.totalIncome), icon: "arrow.up.circle.fill", color: .green)
-                    StatCard(title: "Deductions", value: formatCurrency(entry.totalDeductions), icon: "arrow.down.circle.fill", color: .blue)
+                    StatCard(title: "YTD Income", value: formatCurrency(entry.totalIncome), icon: "arrow.up.circle.fill", color: WidgetColors.primaryGreen)
+                    StatCard(title: "Deductions", value: formatCurrency(entry.totalDeductions), icon: "arrow.down.circle.fill", color: WidgetColors.electricBlue)
                 }
                 
                 Spacer()
                 
-                // Footer
                 HStack {
                     Image(systemName: "clock.fill")
                         .foregroundColor(.white.opacity(0.5))
@@ -368,13 +359,19 @@ struct StatCard: View {
 }
 
 // MARK: - Widget Configuration
-@main
 struct TaxGuardWidget: Widget {
     let kind: String = "TaxGuardWidget"
     
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: TaxGuardProvider()) { entry in
             TaxGuardWidgetEntryView(entry: entry)
+                .containerBackground(for: .widget) {
+                    LinearGradient(
+                        colors: [WidgetColors.electricBlue, WidgetColors.deepBlue],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                }
         }
         .configurationDisplayName("1099 Tax Guard")
         .description("View your quarterly tax estimates at a glance.")
@@ -382,21 +379,21 @@ struct TaxGuardWidget: Widget {
     }
 }
 
-// MARK: - Preview
+// MARK: - Previews
 #Preview(as: .systemSmall) {
     TaxGuardWidget()
 } timeline: {
-    TaxGuardEntry(date: Date(), quarterlyTaxDue: 2500, nextDeadline: "Jan 15", daysUntilDeadline: 30, totalIncome: 45000, totalDeductions: 12000)
+    TaxGuardEntry(date: .now, quarterlyTaxDue: 2500, nextDeadline: "Jan 15", daysUntilDeadline: 23, totalIncome: 45000, totalDeductions: 12000)
 }
 
 #Preview(as: .systemMedium) {
     TaxGuardWidget()
 } timeline: {
-    TaxGuardEntry(date: Date(), quarterlyTaxDue: 2500, nextDeadline: "Jan 15", daysUntilDeadline: 30, totalIncome: 45000, totalDeductions: 12000)
+    TaxGuardEntry(date: .now, quarterlyTaxDue: 2500, nextDeadline: "Jan 15", daysUntilDeadline: 23, totalIncome: 45000, totalDeductions: 12000)
 }
 
 #Preview(as: .systemLarge) {
     TaxGuardWidget()
 } timeline: {
-    TaxGuardEntry(date: Date(), quarterlyTaxDue: 2500, nextDeadline: "Jan 15", daysUntilDeadline: 30, totalIncome: 45000, totalDeductions: 12000)
+    TaxGuardEntry(date: .now, quarterlyTaxDue: 2500, nextDeadline: "Jan 15", daysUntilDeadline: 23, totalIncome: 45000, totalDeductions: 12000)
 }
